@@ -1,4 +1,4 @@
-package com.williammora.openfeed;
+package com.williammora.openfeed.activities;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -8,6 +8,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.williammora.openfeed.R;
 
 public class WelcomeActivity extends Activity {
 
