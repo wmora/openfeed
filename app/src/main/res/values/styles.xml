@@ -5,4 +5,12 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="OpenFeedTheme.Title">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="OpenFeedTheme.Subtitle">
+        <item name="android:textSize">16sp</item>
+    </style>
+
 </resources>
