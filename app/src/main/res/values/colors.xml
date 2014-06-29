@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="material_light_green_900" type="color">#33691e</item>
+    <item name="material_light_green_800" type="color">#558b2f</item>
+    <item name="material_deep_orange_a200" type="color">#ff6e40</item>
+</resources>
