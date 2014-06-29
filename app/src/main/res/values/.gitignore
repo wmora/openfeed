@@ -1,0 +1,13 @@
+# These files are app specific and should not be shared.
+# However, a template for each is provided. You must create a local copy to make the project run
+
+# ###########################################################################
+# twitter_config.xml: Contains your registered Twitter app's key and secret #
+# ###########################################################################
+# <?xml version="1.0" encoding="utf-8"?>
+# <resources>
+#     <string name="oauth_key">your_app_key</string>
+#     <string name="oauth_secret">your_app_secret</string>
+# </resources>
+# ##################
+twitter_config.xml
