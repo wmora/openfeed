@@ -6,4 +6,5 @@
     <color name="openfeed_text_color">#de000000</color>
     <color name="openfeed_text_primary_color">#deffffff</color>
     <color name="openfeed_text_secondary_color">#8a000000</color>
+    <color name="openfeed_twitter_blue">#00aced</color>
 </resources>
