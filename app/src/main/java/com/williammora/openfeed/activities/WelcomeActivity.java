@@ -56,7 +56,7 @@ public class WelcomeActivity extends Activity implements WelcomeFragment.Welcome
 
     private void setUpTwitterService() {
         mTwitter = new AsyncTwitterFactory().getInstance();
-        mTwitter.addListener(new HomeTwitterListener());
+        mTwitter.addListener(new WelcomeTwitterListener());
         mTwitter.setOAuthConsumer(getString(R.string.twitter_oauth_key),
                 getString(R.string.twitter_oauth_secret));
     }
@@ -78,7 +78,7 @@ public class WelcomeActivity extends Activity implements WelcomeFragment.Welcome
         finish();
     }
 
-    private class HomeTwitterListener extends TwitterAdapter {
+    private class WelcomeTwitterListener extends TwitterAdapter {
         @Override
         public void gotOAuthRequestToken(RequestToken token) {
             TwitterService.getInstance().setRequestToken(token);
