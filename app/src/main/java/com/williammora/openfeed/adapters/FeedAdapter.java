@@ -9,18 +9,23 @@ import android.widget.TextView;
 
 import com.williammora.openfeed.R;
 
+import java.util.List;
+
+import twitter4j.Status;
+
 public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
 
-    private String[] mDataset;
+    private List<Status> mDataset;
 
-    public FeedAdapter(String[] dataset) {
+    public FeedAdapter(List<Status> dataset) {
+        super();
         mDataset = dataset;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int i) {
         LinearLayout v = (LinearLayout) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item_feed, null);
+                .inflate(R.layout.list_item_feed, parent, false);
         v.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
         return new ViewHolder(v);
@@ -28,12 +33,17 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.setText(mDataset[position]);
+        holder.setText(mDataset.get(position).getText());
     }
 
     @Override
     public int getItemCount() {
-        return mDataset.length;
+        return mDataset.size();
+    }
+
+    public void setDataset(List<Status> dataset) {
+        mDataset = dataset;
+        notifyItemRangeInserted(0, mDataset.size());
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

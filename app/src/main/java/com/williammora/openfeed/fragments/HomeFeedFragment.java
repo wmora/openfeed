@@ -1,35 +1,118 @@
 package com.williammora.openfeed.fragments;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.williammora.openfeed.R;
 import com.williammora.openfeed.adapters.FeedAdapter;
+import com.williammora.openfeed.services.TwitterService;
 
-public class HomeFeedFragment extends Fragment {
+import java.util.ArrayList;
+import java.util.List;
+
+import twitter4j.AsyncTwitter;
+import twitter4j.AsyncTwitterFactory;
+import twitter4j.ResponseList;
+import twitter4j.Status;
+import twitter4j.TwitterAdapter;
+import twitter4j.TwitterException;
+import twitter4j.TwitterMethod;
+
+public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+
+    private static String TAG = HomeFeedFragment.class.getSimpleName();
+
+    public interface FeedListener {
+        public void onRefreshRequested();
+
+        public void onRefreshCompleted();
+    }
 
     private RecyclerView mFeed;
     private RecyclerView.LayoutManager mLayoutManager;
-    private RecyclerView.Adapter mAdapter;
+    private FeedAdapter mAdapter;
+    private SwipeRefreshLayout mFeedContainer;
+    private FeedListener mListener;
+    private AsyncTwitter mTwitter;
+    private List<Status> statuses;
+    private boolean mPendingRequest;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
-        mFeed = (RecyclerView) rootView.findViewById(R.id.feed);
-        mLayoutManager = new LinearLayoutManager(getActivity());
-        mFeed.setLayoutManager(mLayoutManager);
 
-        mAdapter = new FeedAdapter(new String[]{"Feed 1", "Feed 2", "Feed 3", "Feed 4", "Feed 5"});
+        mLayoutManager = new LinearLayoutManager(getActivity());
+        if (statuses == null) {
+            statuses = new ArrayList<Status>();
+        }
+        mAdapter = new FeedAdapter(statuses);
+
+        mFeed = (RecyclerView) rootView.findViewById(R.id.feed);
+        mFeed.setLayoutManager(mLayoutManager);
         mFeed.setAdapter(mAdapter);
+
+        mFeedContainer = (SwipeRefreshLayout) rootView.findViewById(R.id.feed_container);
+        mFeedContainer.setOnRefreshListener(this);
 
         return rootView;
     }
 
+    @Override
+    public void onAttach(Activity activity) {
+        if (activity instanceof FeedListener) {
+            mListener = (FeedListener) activity;
+            mTwitter = new AsyncTwitterFactory().getInstance();
+            mTwitter.addListener(new HomeTwitterListener());
+            mTwitter.setOAuthConsumer(getString(R.string.twitter_oauth_key),
+                    getString(R.string.twitter_oauth_secret));
+            mTwitter.setOAuthAccessToken(TwitterService.getInstance().getAccessToken(activity));
+        }
+        super.onAttach(activity);
+    }
+
+    @Override
+    public void onRefresh() {
+        if (mPendingRequest) {
+            return;
+        }
+        mTwitter.getHomeTimeline();
+        mPendingRequest = true;
+        mListener.onRefreshRequested();
+    }
+
+    public void onRequestCompleted() {
+        mPendingRequest = false;
+        mFeedContainer.setRefreshing(false);
+        mListener.onRefreshCompleted();
+    }
+
+    public void updateStatuses(List<Status> statuses) {
+        this.statuses = statuses;
+        mAdapter.setDataset(statuses);
+    }
+
+    private class HomeTwitterListener extends TwitterAdapter {
+
+        @Override
+        public void gotHomeTimeline(ResponseList<Status> statuses) {
+            Log.d(TAG, statuses.toString());
+            updateStatuses(statuses);
+            onRequestCompleted();
+        }
+
+        @Override
+        public void onException(TwitterException te, TwitterMethod method) {
+            Log.e(TAG, method.toString(), te);
+            onRequestCompleted();
+        }
+    }
 }

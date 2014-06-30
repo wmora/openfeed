@@ -10,7 +10,7 @@ import com.williammora.openfeed.R;
 import com.williammora.openfeed.fragments.HomeFeedFragment;
 import com.williammora.openfeed.services.TwitterService;
 
-public class HomeActivity extends Activity {
+public class HomeActivity extends Activity implements HomeFeedFragment.FeedListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,4 +56,13 @@ public class HomeActivity extends Activity {
         finish();
     }
 
+    @Override
+    public void onRefreshRequested() {
+        setTitle(R.string.refreshing);
+    }
+
+    @Override
+    public void onRefreshCompleted() {
+        setTitle(R.string.title_activity_home);
+    }
 }
