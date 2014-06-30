@@ -51,4 +51,10 @@ public class TwitterService {
         editor.remove(Preferences.TWITTER_ACCESS_TOKEN_SECRET);
         editor.commit();
     }
+
+    public AccessToken getAccessToken(Context context) {
+        String tokenKey = getSharedPreferences(context).getString(Preferences.TWITTER_ACCESS_TOKEN_KEY, "");
+        String tokenSecret = getSharedPreferences(context).getString(Preferences.TWITTER_ACCESS_TOKEN_SECRET, "");
+        return new AccessToken(tokenKey, tokenSecret);
+    }
 }
