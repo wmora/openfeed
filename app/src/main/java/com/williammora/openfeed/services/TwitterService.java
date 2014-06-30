@@ -44,4 +44,11 @@ public class TwitterService {
     public RequestToken getRequestToken() {
         return requestToken;
     }
+
+    public void signOut(Context context) {
+        SharedPreferences.Editor editor = getSharedPreferences(context).edit();
+        editor.remove(Preferences.TWITTER_ACCESS_TOKEN_KEY);
+        editor.remove(Preferences.TWITTER_ACCESS_TOKEN_SECRET);
+        editor.commit();
+    }
 }

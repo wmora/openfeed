@@ -1,12 +1,14 @@
 package com.williammora.openfeed.activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.williammora.openfeed.R;
 import com.williammora.openfeed.fragments.HomeFeedFragment;
+import com.williammora.openfeed.services.TwitterService;
 
 public class HomeActivity extends Activity {
 
@@ -35,10 +37,23 @@ public class HomeActivity extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_sign_out) {
+            signOut();
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void signOut() {
+        TwitterService.getInstance().signOut(getApplicationContext());
+        goToWelcome();
+    }
+
+    private void goToWelcome() {
+        Intent intent = new Intent();
+        intent.setClass(getApplicationContext(), WelcomeActivity.class);
+        startActivity(intent);
+        finish();
     }
 
 }
