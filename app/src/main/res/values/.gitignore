@@ -6,8 +6,10 @@
 # ###########################################################################
 # <?xml version="1.0" encoding="utf-8"?>
 # <resources>
-#     <string name="oauth_key">your_app_key</string>
-#     <string name="oauth_secret">your_app_secret</string>
+#     <string name="twitter_oauth_key">your_app_key</string>
+#     <string name="twitter_oauth_secret">your_app_secret</string>
+#     <!-- Specify this scheme in your AndroidManifest -->
+#     <string name="twitter_callback_url">your_scheme://your_host</string>
 # </resources>
 # ##################
 twitter_config.xml
