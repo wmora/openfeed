@@ -10,7 +10,7 @@ import com.williammora.openfeed.R;
 import com.williammora.openfeed.fragments.HomeFeedFragment;
 import com.williammora.openfeed.services.TwitterService;
 
-public class HomeActivity extends Activity implements HomeFeedFragment.FeedListener {
+public class HomeActivity extends Activity implements HomeFeedFragment.HomeFeedFragmentListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

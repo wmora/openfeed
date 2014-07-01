@@ -30,7 +30,7 @@ public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
 
     private static String TAG = HomeFeedFragment.class.getSimpleName();
 
-    public interface FeedListener {
+    public interface HomeFeedFragmentListener {
         public void onRefreshRequested();
 
         public void onRefreshCompleted();
@@ -40,10 +40,8 @@ public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
     private RecyclerView.LayoutManager mLayoutManager;
     private FeedAdapter mAdapter;
     private SwipeRefreshLayout mFeedContainer;
-    private FeedListener mListener;
+    private HomeFeedFragmentListener mListener;
     private AsyncTwitter mTwitter;
-    private List<Status> statuses;
-    private boolean mPendingRequest;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,10 +49,7 @@ public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
 
         mLayoutManager = new LinearLayoutManager(getActivity());
-        if (statuses == null) {
-            statuses = new ArrayList<Status>();
-        }
-        mAdapter = new FeedAdapter(statuses);
+        mAdapter = new FeedAdapter(new ArrayList<Status>());
 
         mFeed = (RecyclerView) rootView.findViewById(R.id.feed);
         mFeed.setLayoutManager(mLayoutManager);
@@ -68,9 +63,9 @@ public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
 
     @Override
     public void onAttach(Activity activity) {
-        if (activity instanceof FeedListener) {
-            mListener = (FeedListener) activity;
-            mTwitter = new AsyncTwitterFactory().getInstance();
+        if (activity instanceof HomeFeedFragmentListener) {
+            mListener = (HomeFeedFragmentListener) activity;
+            mTwitter = AsyncTwitterFactory.getSingleton();
             mTwitter.addListener(new HomeTwitterListener());
             mTwitter.setOAuthConsumer(getString(R.string.twitter_oauth_key),
                     getString(R.string.twitter_oauth_secret));
@@ -81,22 +76,16 @@ public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
 
     @Override
     public void onRefresh() {
-        if (mPendingRequest) {
-            return;
-        }
-        mTwitter.getHomeTimeline();
-        mPendingRequest = true;
         mListener.onRefreshRequested();
+        mTwitter.getHomeTimeline();
     }
 
     public void onRequestCompleted() {
-        mPendingRequest = false;
         mFeedContainer.setRefreshing(false);
         mListener.onRefreshCompleted();
     }
 
     public void updateStatuses(List<Status> statuses) {
-        this.statuses = statuses;
         mAdapter.setDataset(statuses);
     }
 
