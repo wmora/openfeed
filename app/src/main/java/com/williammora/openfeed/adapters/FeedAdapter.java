@@ -18,13 +18,12 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
     private List<Status> mDataset;
 
     public FeedAdapter(List<Status> dataset) {
-        super();
         mDataset = dataset;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int i) {
-        LinearLayout v = (LinearLayout) LayoutInflater.from(parent.getContext())
+        View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item_feed, parent, false);
         v.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -42,7 +41,8 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
     }
 
     public void setDataset(List<Status> dataset) {
-        mDataset = dataset;
+        mDataset.clear();
+        mDataset.addAll(dataset);
         notifyItemRangeInserted(0, mDataset.size());
     }
 
