@@ -120,15 +120,18 @@ public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
             return;
         }
 
+        // Timeline was empty
         if (mStatuses.isEmpty()) {
             statuses.addAll(mStatuses);
             mStatuses = statuses;
             mAdapter.setDataset(mStatuses);
         } else if (mStatuses.get(mStatuses.size() - 1).getId() == statuses.get(0).getId()) {
+            // Previous statuses were requested
             statuses.remove(0);
             mStatuses.addAll(statuses);
             mAdapter.addAll(statuses);
         } else {
+            // Latest statuses
             mStatuses.addAll(0, statuses);
             mAdapter.addAll(0, statuses);
             mFeed.smoothScrollToPosition(0);
