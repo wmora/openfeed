@@ -115,17 +115,25 @@ public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
     }
 
     public void updateStatuses(List<Status> statuses) {
-        if (!mStatuses.isEmpty() && !statuses.isEmpty()) {
-            if (mStatuses.get(mStatuses.size() - 1).getId() == statuses.get(0).getId()) {
-                statuses.remove(0);
-                mStatuses.addAll(statuses);
-                mAdapter.addAll(statuses);
-            }
-        } else {
+
+        if (statuses == null || statuses.isEmpty()) {
+            return;
+        }
+
+        if (mStatuses.isEmpty()) {
             statuses.addAll(mStatuses);
             mStatuses = statuses;
             mAdapter.setDataset(mStatuses);
+        } else if (mStatuses.get(mStatuses.size() - 1).getId() == statuses.get(0).getId()) {
+            statuses.remove(0);
+            mStatuses.addAll(statuses);
+            mAdapter.addAll(statuses);
+        } else {
+            mStatuses.addAll(0, statuses);
+            mAdapter.addAll(0, statuses);
+            mFeed.smoothScrollToPosition(0);
         }
+
     }
 
     public void onScrollStateChanged(int i) {

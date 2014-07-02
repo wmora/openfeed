@@ -64,6 +64,11 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         notifyItemRangeInserted(mDataset.size(), statuses.size());
     }
 
+    public void addAll(int i, List<Status> statuses) {
+        mDataset.addAll(i, statuses);
+        notifyItemRangeInserted(0, statuses.size());
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView mFeedUserPic;
         public TextView mFeedUserName;
