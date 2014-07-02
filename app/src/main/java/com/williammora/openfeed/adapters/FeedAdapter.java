@@ -37,6 +37,10 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, int position) {
         Status status = mDataset.get(position);
 
+        if (status.isRetweet()) {
+            status = status.getRetweetedStatus();
+        }
+
         Picasso.with(holder.mFeedUserPic.getContext()).cancelRequest(holder.mFeedUserPic);
         Picasso.with(holder.mFeedUserPic.getContext())
                 .load(status.getUser().getBiggerProfileImageURLHttps())
