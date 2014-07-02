@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.williammora.openfeed.R;
 import com.williammora.openfeed.adapters.FeedAdapter;
+import com.williammora.openfeed.dto.UserFeed;
 import com.williammora.openfeed.services.TwitterService;
 
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
     private SwipeRefreshLayout mFeedContainer;
     private HomeFeedFragmentListener mListener;
     private Twitter mTwitter;
-    private List<Status> mStatuses;
+    private UserFeed mUserFeed;
     private Paging mPaging;
     private boolean mRequestingMore;
 
@@ -51,8 +52,9 @@ public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
 
-        mStatuses = new ArrayList<Status>();
-        mAdapter = new FeedAdapter(mStatuses);
+        mUserFeed = new UserFeed();
+        mUserFeed.setStatuses(new ArrayList<Status>());
+        mAdapter = new FeedAdapter(mUserFeed.getStatuses());
 
         mFeed = (RecyclerView) rootView.findViewById(R.id.feed);
         mFeed.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -83,7 +85,7 @@ public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
     @Override
     public void onResume() {
         super.onResume();
-        if (mStatuses.isEmpty()) {
+        if (mUserFeed.getStatuses().isEmpty()) {
             mFeedContainer.setRefreshing(true);
             onRefresh();
         }
@@ -93,8 +95,8 @@ public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
     public void onRefresh() {
         mPaging = new Paging();
         mPaging.count(50);
-        if (!mStatuses.isEmpty()) {
-            mPaging.setSinceId(mStatuses.get(0).getId());
+        if (!mUserFeed.getStatuses().isEmpty()) {
+            mPaging.setSinceId(mUserFeed.getStatuses().get(0).getId());
         }
         requestMore(mPaging);
         mFeedContainer.setEnabled(false);
@@ -123,18 +125,18 @@ public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
         }
 
         // Timeline was empty
-        if (mStatuses.isEmpty()) {
-            statuses.addAll(mStatuses);
-            mStatuses = statuses;
-            mAdapter.setDataset(mStatuses);
-        } else if (mStatuses.get(mStatuses.size() - 1).getId() == statuses.get(0).getId()) {
+        if (mUserFeed.getStatuses().isEmpty()) {
+            statuses.addAll(mUserFeed.getStatuses());
+            mUserFeed.setStatuses(statuses);
+            mAdapter.setDataset(mUserFeed.getStatuses());
+        } else if (mUserFeed.getStatuses().get(mUserFeed.getStatuses().size() - 1).getId() == statuses.get(0).getId()) {
             // Previous statuses were requested
             statuses.remove(0);
-            mStatuses.addAll(statuses);
+            mUserFeed.getStatuses().addAll(statuses);
             mAdapter.addAll(statuses);
         } else {
             // Latest statuses
-            mStatuses.addAll(0, statuses);
+            mUserFeed.getStatuses().addAll(0, statuses);
             mAdapter.addAll(0, statuses);
             mFeed.smoothScrollToPosition(0);
         }
@@ -152,7 +154,7 @@ public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
 
     private void requestPreviousStatuses() {
         mPaging = new Paging();
-        mPaging.setMaxId(mStatuses.get(mStatuses.size() - 1).getId());
+        mPaging.setMaxId(mUserFeed.getStatuses().get(mUserFeed.getStatuses().size() - 1).getId());
         mPaging.count(100);
         requestMore(mPaging);
     }
@@ -161,7 +163,7 @@ public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
         // Since we assigned the Status id as the View tag we need to compare whatever is last
         // on screen vs the id of the last element in the status list
         View currentBottomChildView = mFeed.getChildAt(mFeed.getChildCount() - 1);
-        long lastStatusId = mStatuses.get(mStatuses.size() - 1).getId();
+        long lastStatusId = mUserFeed.getStatuses().get(mUserFeed.getStatuses().size() - 1).getId();
         return currentBottomChildView.getTag().toString().equals(String.valueOf(lastStatusId));
     }
 
