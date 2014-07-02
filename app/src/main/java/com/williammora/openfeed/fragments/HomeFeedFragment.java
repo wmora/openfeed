@@ -32,6 +32,8 @@ public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
 
     private static String TAG = HomeFeedFragment.class.getSimpleName();
 
+    private static final String SAVED_USER_FEED = "SAVED_USER_FEED";
+
     public interface HomeFeedFragmentListener {
         public void onRefreshRequested();
 
@@ -52,8 +54,13 @@ public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
 
-        mUserFeed = new UserFeed();
-        mUserFeed.setStatuses(new ArrayList<Status>());
+        if (savedInstanceState != null) {
+            mUserFeed = (UserFeed) savedInstanceState.getSerializable(SAVED_USER_FEED);
+        } else {
+            mUserFeed = new UserFeed();
+            mUserFeed.setStatuses(new ArrayList<Status>());
+        }
+        
         mAdapter = new FeedAdapter(mUserFeed.getStatuses());
 
         mFeed = (RecyclerView) rootView.findViewById(R.id.feed);
@@ -89,6 +96,12 @@ public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
             mFeedContainer.setRefreshing(true);
             onRefresh();
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putSerializable(SAVED_USER_FEED, mUserFeed);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
