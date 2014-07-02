@@ -158,7 +158,6 @@ public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
                 return mTwitter.getHomeTimeline(mPaging);
             } catch (TwitterException e) {
                 Log.e(TAG, e.getMessage(), e);
-                onRequestCompleted();
                 return null;
             }
         }

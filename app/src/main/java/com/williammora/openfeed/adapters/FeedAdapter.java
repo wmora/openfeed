@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
 import com.williammora.openfeed.R;
 import com.williammora.openfeed.utils.UserUtils;
 
@@ -36,6 +37,11 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, int position) {
         Status status = mDataset.get(position);
 
+        Picasso.with(holder.mFeedUserPic.getContext()).cancelRequest(holder.mFeedUserPic);
+        Picasso.with(holder.mFeedUserPic.getContext())
+                .load(status.getUser().getOriginalProfileImageURLHttps())
+                .error(R.drawable.ic_launcher)
+                .into(holder.mFeedUserPic);
         holder.mFeedText.setText(status.getText());
         holder.mFeedUserName.setText(status.getUser().getName());
         holder.mFeedUserScreenName.setText(UserUtils.getFullScreenName(status.getUser()));
