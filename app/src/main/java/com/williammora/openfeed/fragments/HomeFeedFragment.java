@@ -27,7 +27,7 @@ import twitter4j.TwitterFactory;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
 
-public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, RecyclerView.OnScrollListener {
 
     private static String TAG = HomeFeedFragment.class.getSimpleName();
 
@@ -37,12 +37,14 @@ public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
         public void onRefreshCompleted();
     }
 
+    private RecyclerView mFeed;
     private FeedAdapter mAdapter;
     private SwipeRefreshLayout mFeedContainer;
     private HomeFeedFragmentListener mListener;
     private Twitter mTwitter;
     private List<Status> mStatuses;
     private Paging mPaging;
+    private boolean mRequestingMore;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,11 +53,11 @@ public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
 
         mStatuses = new ArrayList<Status>();
         mAdapter = new FeedAdapter(mStatuses);
-        mPaging = new Paging();
 
-        RecyclerView mFeed = (RecyclerView) rootView.findViewById(R.id.feed);
+        mFeed = (RecyclerView) rootView.findViewById(R.id.feed);
         mFeed.setLayoutManager(new LinearLayoutManager(getActivity()));
         mFeed.setAdapter(mAdapter);
+        mFeed.setOnScrollListener(this);
 
         mFeedContainer = (SwipeRefreshLayout) rootView.findViewById(R.id.feed_container);
         mFeedContainer.setOnRefreshListener(this);
@@ -79,7 +81,17 @@ public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if (mStatuses.isEmpty()) {
+            mFeedContainer.setRefreshing(true);
+            onRefresh();
+        }
+    }
+
+    @Override
     public void onRefresh() {
+        mPaging = new Paging();
         if (!mStatuses.isEmpty()) {
             mPaging.setSinceId(mStatuses.get(0).getId());
         }
@@ -87,18 +99,55 @@ public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
     }
 
     private void requestMore(Paging paging) {
+        if (mRequestingMore) {
+            return;
+        }
         mListener.onRefreshRequested();
         new HomeFeedTask().execute(paging);
+        mRequestingMore = true;
     }
 
     public void onRequestCompleted() {
+        mRequestingMore = false;
         mFeedContainer.setRefreshing(false);
         mListener.onRefreshCompleted();
     }
 
     public void updateStatuses(List<Status> statuses) {
-        statuses.addAll(mStatuses);
-        mAdapter.setDataset(statuses);
+        if (!mStatuses.isEmpty() && !statuses.isEmpty()) {
+            if (mStatuses.get(mStatuses.size() - 1).getId() == statuses.get(0).getId()) {
+                statuses.remove(0);
+                mStatuses.addAll(statuses);
+                mAdapter.addAll(statuses);
+            }
+        } else {
+            statuses.addAll(mStatuses);
+            mStatuses = statuses;
+            mAdapter.setDataset(mStatuses);
+        }
+    }
+
+    public void onScrollStateChanged(int i) {
+    }
+
+    public void onScrolled(int x, int y) {
+        if (feedBottomReached()) {
+            requestPreviousStatuses();
+        }
+    }
+
+    private void requestPreviousStatuses() {
+        mPaging = new Paging();
+        mPaging.setMaxId(mStatuses.get(mStatuses.size() - 1).getId());
+        requestMore(mPaging);
+    }
+
+    private boolean feedBottomReached() {
+        // Since we assigned the Status id as the View tag we need to compare whatever is last
+        // on screen vs the id of the last element in the status list
+        View currentBottomChildView = mFeed.getChildAt(mFeed.getChildCount() - 1);
+        long lastStatusId = mStatuses.get(mStatuses.size() - 1).getId();
+        return currentBottomChildView.getTag().toString().equals(String.valueOf(lastStatusId));
     }
 
     private class HomeFeedTask extends AsyncTask<Paging, Void, List<Status>> {

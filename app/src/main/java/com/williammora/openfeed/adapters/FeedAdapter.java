@@ -33,6 +33,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.setText(mDataset.get(position).getText());
+        holder.setTag(String.valueOf(mDataset.get(position).getId()));
     }
 
     @Override
@@ -46,6 +47,11 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         notifyItemRangeInserted(0, mDataset.size());
     }
 
+    public void addAll(List<Status> statuses) {
+        mDataset.addAll(statuses);
+        notifyItemRangeInserted(mDataset.size(), statuses.size());
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView mFeedText;
 
@@ -56,6 +62,10 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
 
         private void setText(String text) {
             mFeedText.setText(text);
+        }
+
+        public void setTag(String tag) {
+            itemView.setTag(tag);
         }
     }
 }

@@ -58,7 +58,7 @@ public class HomeActivity extends Activity implements HomeFeedFragment.HomeFeedF
 
     @Override
     public void onRefreshRequested() {
-        setTitle(R.string.refreshing);
+        setTitle(R.string.loading);
     }
 
     @Override

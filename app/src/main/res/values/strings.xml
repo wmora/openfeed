@@ -12,6 +12,6 @@
     <!-- Home -->
     <string name="title_activity_home">Home</string>
     <string name="action_sign_out">Sign Out</string>
-    <string name="refreshing">Refreshing…</string>
+    <string name="loading">Loading…</string>
 
 </resources>
