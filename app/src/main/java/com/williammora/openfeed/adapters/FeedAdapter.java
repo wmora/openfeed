@@ -39,7 +39,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
 
         Picasso.with(holder.mFeedUserPic.getContext()).cancelRequest(holder.mFeedUserPic);
         Picasso.with(holder.mFeedUserPic.getContext())
-                .load(status.getUser().getOriginalProfileImageURLHttps())
+                .load(status.getUser().getBiggerProfileImageURLHttps())
                 .error(R.drawable.ic_launcher)
                 .into(holder.mFeedUserPic);
         holder.mFeedText.setText(status.getText());

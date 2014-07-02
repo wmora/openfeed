@@ -20,7 +20,7 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_centerVertical="true"
-                android:layout_margin="8dp"
+                android:layout_margin="16dp"
                 android:src="@drawable/ic_launcher" />
 
             <RelativeLayout
@@ -67,7 +67,8 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/feed_text"
                     android:orientation="horizontal"
-                    android:paddingBottom="8dp">
+                    android:paddingBottom="8dp"
+                    android:visibility="gone">
 
                     <TextView
                         style="@style/OpenFeedTheme.SmallText"
