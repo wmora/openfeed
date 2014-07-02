@@ -13,4 +13,19 @@
         <item name="android:textSize">16sp</item>
     </style>
 
+    <style name="OpenFeedTheme.SmallText">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="OpenFeedTheme.FeedInfo" parent="OpenFeedTheme.SmallText">
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+    </style>
+
+    <style name="OpenFeedTheme.Status">
+        <item name="android:textSize">14sp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:paddingRight">8dp</item>
+    </style>
+
 </resources>

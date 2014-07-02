@@ -4,10 +4,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.williammora.openfeed.R;
+import com.williammora.openfeed.utils.UserUtils;
 
 import java.util.List;
 
@@ -32,7 +34,11 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.setText(mDataset.get(position).getText());
+        Status status = mDataset.get(position);
+
+        holder.mFeedText.setText(status.getText());
+        holder.mFeedUserName.setText(status.getUser().getName());
+        holder.mFeedUserScreenName.setText(UserUtils.getFullScreenName(status.getUser()));
         holder.setTag(String.valueOf(mDataset.get(position).getId()));
     }
 
@@ -53,15 +59,17 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView mFeedText;
+        public ImageView mFeedUserPic;
+        public TextView mFeedUserName;
+        public TextView mFeedUserScreenName;
+        public TextView mFeedText;
 
         public ViewHolder(View v) {
             super(v);
+            mFeedUserPic = (ImageView) v.findViewById(R.id.feed_user_pic);
+            mFeedUserName = (TextView) v.findViewById(R.id.feed_user_name);
+            mFeedUserScreenName = (TextView) v.findViewById(R.id.feed_user_screenname);
             mFeedText = (TextView) v.findViewById(R.id.feed_text);
-        }
-
-        private void setText(String text) {
-            mFeedText.setText(text);
         }
 
         public void setTag(String tag) {

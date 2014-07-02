@@ -13,5 +13,8 @@
     <string name="title_activity_home">Home</string>
     <string name="action_sign_out">Sign Out</string>
     <string name="loading">Loading…</string>
+    <string name="feed_user_name_placeholder">William Mora</string>
+    <string name="feed_user_screenname_placeholder">\@_williammora</string>
+    <string name="feed_text_placeholder">This is a test tweet, I\'m adding @other_users and adding a bunch of other text. Lorem ipsum blablabla, it\'s time to use Samuel L. Ipsum yeh</string>
 
 </resources>

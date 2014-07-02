@@ -8,14 +8,80 @@
     <android.support.v7.widget.CardView
         android:id="@+id/feed_card"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         card_view:cardCornerRadius="4dp">
 
-        <TextView
-            android:id="@+id/feed_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/feed_user_pic"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_centerVertical="true"
+                android:layout_margin="8dp"
+                android:src="@drawable/ic_launcher" />
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/feed_user_pic"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/feed_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/feed_user_name"
+                        style="@style/OpenFeedTheme.FeedInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="10dp"
+                        android:text="@string/feed_user_name_placeholder"
+                        android:textAllCaps="true"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/feed_user_screenname"
+                        style="@style/OpenFeedTheme.FeedInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="@string/feed_user_screenname_placeholder" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/feed_text"
+                    style="@style/OpenFeedTheme.Status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/feed_info"
+                    android:text="@string/feed_text_placeholder" />
+
+                <LinearLayout
+                    android:id="@+id/feed_stats"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/feed_text"
+                    android:orientation="horizontal"
+                    android:paddingBottom="8dp">
+
+                    <TextView
+                        style="@style/OpenFeedTheme.SmallText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" />
+
+                    <TextView
+                        style="@style/OpenFeedTheme.SmallText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
+
+            </RelativeLayout>
+        </RelativeLayout>
 
     </android.support.v7.widget.CardView>
 
