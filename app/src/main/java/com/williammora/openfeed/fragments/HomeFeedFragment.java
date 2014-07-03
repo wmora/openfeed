@@ -69,6 +69,10 @@ public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
         mFeed.setOnScrollListener(this);
 
         mFeedContainer = (SwipeRefreshLayout) rootView.findViewById(R.id.feed_container);
+        mFeedContainer.setColorSchemeColors(getResources().getColor(R.color.openfeed_deep_orange_a400),
+                getResources().getColor(R.color.openfeed_deep_orange_a700),
+                getResources().getColor(R.color.openfeed_deep_orange_a200),
+                getResources().getColor(R.color.openfeed_deep_orange_a100));
         mFeedContainer.setOnRefreshListener(this);
 
         return rootView;

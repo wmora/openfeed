@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="OpenFeedTheme" parent="android:Theme.Material.Light">
+        <item name="android:colorBackground">@color/openfeed_light_green_50</item>
         <item name="android:colorPrimaryDark">@color/openfeed_light_green_900</item>
         <item name="android:colorPrimary">@color/openfeed_light_green_800</item>
-        <item name="android:colorAccent">@color/openfeed_deep_orange_a200</item>
+        <item name="android:colorAccent">@color/openfeed_deep_orange_a400</item>
         <item name="android:textColor">@color/openfeed_text_color</item>
         <item name="android:textColorPrimary">@color/openfeed_text_primary_color</item>
         <item name="android:textColorSecondary">@color/openfeed_text_secondary_color</item>

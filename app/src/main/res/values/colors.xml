@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="openfeed_light_green_900">#33691e</color>
+    <color name="openfeed_light_green_50">#f1f8e9</color>
     <color name="openfeed_light_green_800">#558b2f</color>
+    <color name="openfeed_light_green_900">#33691e</color>
+    <color name="openfeed_deep_orange_a100">#ff9e80</color>
     <color name="openfeed_deep_orange_a200">#ff6e40</color>
+    <color name="openfeed_deep_orange_a400">#ff3d00</color>
+    <color name="openfeed_deep_orange_a700">#dd2c00</color>
     <color name="openfeed_text_color">#de000000</color>
     <color name="openfeed_text_primary_color">#deffffff</color>
     <color name="openfeed_text_secondary_color">#8a000000</color>
