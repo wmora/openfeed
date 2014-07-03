@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import com.williammora.openfeed.R;
 import com.williammora.openfeed.adapters.FeedAdapter;
 import com.williammora.openfeed.dto.UserFeed;
+import com.williammora.openfeed.listeners.OnRecyclerViewItemClickListener;
 import com.williammora.openfeed.services.TwitterService;
 
 import java.util.ArrayList;
@@ -28,7 +29,8 @@ import twitter4j.TwitterFactory;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
 
-public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, RecyclerView.OnScrollListener {
+public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener,
+        RecyclerView.OnScrollListener, OnRecyclerViewItemClickListener<Status> {
 
     private static String TAG = HomeFeedFragment.class.getSimpleName();
 
@@ -60,8 +62,9 @@ public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
             mUserFeed = new UserFeed();
             mUserFeed.setStatuses(new ArrayList<Status>());
         }
-        
+
         mAdapter = new FeedAdapter(mUserFeed.getStatuses());
+        mAdapter.setOnItemClickListener(this);
 
         mFeed = (RecyclerView) rootView.findViewById(R.id.feed);
         mFeed.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -178,11 +181,20 @@ public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
     }
 
     private boolean feedBottomReached() {
-        // Since we assigned the Status id as the View tag we need to compare whatever is last
-        // on screen vs the id of the last element in the status list
-        View currentBottomChildView = mFeed.getChildAt(mFeed.getChildCount() - 1);
-        long lastStatusId = mUserFeed.getStatuses().get(mUserFeed.getStatuses().size() - 1).getId();
-        return currentBottomChildView.getTag().toString().equals(String.valueOf(lastStatusId));
+        // Since we assigned the Status as the View tag we need to compare whatever is last
+        // on screen vs the last element on the status list
+        Status currentBottomStatus = (Status) mFeed.getChildAt(mFeed.getChildCount() - 1).getTag();
+        Status lastStatus = mUserFeed.getStatuses().get(mUserFeed.getStatuses().size() - 1);
+        if (lastStatus.isRetweet()) {
+            lastStatus = lastStatus.getRetweetedStatus();
+        }
+        return currentBottomStatus == lastStatus;
+    }
+
+    @Override
+    public void onItemClick(View view, Status status) {
+        // TODO: Open detail activity
+        Log.d(TAG, "Open detail for status " + status.getId());
     }
 
     private class HomeFeedTask extends AsyncTask<Paging, Void, List<Status>> {

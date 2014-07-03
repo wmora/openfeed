@@ -1,7 +1,6 @@
 package com.williammora.openfeed.adapters;
 
 import android.support.v7.widget.RecyclerView;
-import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +10,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.williammora.openfeed.R;
+import com.williammora.openfeed.listeners.OnRecyclerViewItemClickListener;
 import com.williammora.openfeed.utils.StatusUtils;
 import com.williammora.openfeed.utils.UserUtils;
 
@@ -18,9 +18,11 @@ import java.util.List;
 
 import twitter4j.Status;
 
-public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
+public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> implements View.OnClickListener {
 
     private List<Status> mDataset;
+
+    private OnRecyclerViewItemClickListener<Status> itemClickListener;
 
     public FeedAdapter(List<Status> dataset) {
         mDataset = dataset;
@@ -32,6 +34,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
                 .inflate(R.layout.list_item_status, parent, false);
         v.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
+        v.setOnClickListener(this);
         return new ViewHolder(v);
     }
 
@@ -52,12 +55,24 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         holder.mStatusUserName.setText(status.getUser().getName());
         holder.mStatusUserScreenName.setText(UserUtils.getFullScreenName(status.getUser()));
         holder.mStatusCreated.setText(StatusUtils.getCreatedText(status));
-        holder.setTag(String.valueOf(mDataset.get(position).getId()));
+        holder.setTag(status);
     }
 
     @Override
     public int getItemCount() {
         return mDataset.size();
+    }
+
+    public void setOnItemClickListener(OnRecyclerViewItemClickListener<Status> itemClickListener) {
+        this.itemClickListener = itemClickListener;
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (itemClickListener != null) {
+            Status status = (Status) view.getTag();
+            itemClickListener.onItemClick(view, status);
+        }
     }
 
     public void setDataset(List<Status> dataset) {
@@ -92,7 +107,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
             mStatusCreated = (TextView) v.findViewById(R.id.status_created);
         }
 
-        public void setTag(String tag) {
+        public void setTag(Status tag) {
             itemView.setTag(tag);
         }
     }
