@@ -54,7 +54,7 @@ public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_home, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_home_feed, container, false);
 
         if (savedInstanceState != null) {
             mUserFeed = (UserFeed) savedInstanceState.getSerializable(SAVED_USER_FEED);
