@@ -112,7 +112,6 @@ public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
             mPaging.setSinceId(mUserFeed.getStatuses().get(0).getId());
         }
         requestMore(mPaging);
-        mFeedContainer.setEnabled(false);
     }
 
     private void requestMore(Paging paging) {
@@ -122,6 +121,8 @@ public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
         mListener.onRefreshRequested();
         new HomeFeedTask().execute(paging);
         mRequestingMore = true;
+        mFeedContainer.setEnabled(false);
+        mFeedContainer.setRefreshing(true);
     }
 
     public void onRequestCompleted() {
