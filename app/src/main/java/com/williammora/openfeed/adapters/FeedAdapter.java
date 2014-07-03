@@ -1,6 +1,7 @@
 package com.williammora.openfeed.adapters;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.williammora.openfeed.R;
+import com.williammora.openfeed.utils.StatusUtils;
 import com.williammora.openfeed.utils.UserUtils;
 
 import java.util.List;
@@ -41,14 +43,15 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
             status = status.getRetweetedStatus();
         }
 
-        Picasso.with(holder.mFeedUserPic.getContext()).cancelRequest(holder.mFeedUserPic);
-        Picasso.with(holder.mFeedUserPic.getContext())
+        Picasso.with(holder.mStatusUserPic.getContext()).cancelRequest(holder.mStatusUserPic);
+        Picasso.with(holder.mStatusUserPic.getContext())
                 .load(status.getUser().getBiggerProfileImageURLHttps())
                 .error(R.drawable.ic_launcher)
-                .into(holder.mFeedUserPic);
-        holder.mFeedText.setText(status.getText());
-        holder.mFeedUserName.setText(status.getUser().getName());
-        holder.mFeedUserScreenName.setText(UserUtils.getFullScreenName(status.getUser()));
+                .into(holder.mStatusUserPic);
+        holder.mStatusText.setText(status.getText());
+        holder.mStatusUserName.setText(status.getUser().getName());
+        holder.mStatusUserScreenName.setText(UserUtils.getFullScreenName(status.getUser()));
+        holder.mStatusCreated.setText(StatusUtils.getCreatedText(status));
         holder.setTag(String.valueOf(mDataset.get(position).getId()));
     }
 
@@ -74,17 +77,19 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public ImageView mFeedUserPic;
-        public TextView mFeedUserName;
-        public TextView mFeedUserScreenName;
-        public TextView mFeedText;
+        public ImageView mStatusUserPic;
+        public TextView mStatusUserName;
+        public TextView mStatusUserScreenName;
+        public TextView mStatusText;
+        public TextView mStatusCreated;
 
         public ViewHolder(View v) {
             super(v);
-            mFeedUserPic = (ImageView) v.findViewById(R.id.status_user_pic);
-            mFeedUserName = (TextView) v.findViewById(R.id.status_user_name);
-            mFeedUserScreenName = (TextView) v.findViewById(R.id.status_user_screenname);
-            mFeedText = (TextView) v.findViewById(R.id.feed_text);
+            mStatusUserPic = (ImageView) v.findViewById(R.id.status_user_pic);
+            mStatusUserName = (TextView) v.findViewById(R.id.status_user_name);
+            mStatusUserScreenName = (TextView) v.findViewById(R.id.status_user_screenname);
+            mStatusText = (TextView) v.findViewById(R.id.status_text);
+            mStatusCreated = (TextView) v.findViewById(R.id.status_created);
         }
 
         public void setTag(String tag) {
