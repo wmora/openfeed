@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="openfeed_grey_300">#e0e0e0</color>
     <color name="openfeed_light_green_50">#f1f8e9</color>
     <color name="openfeed_light_green_800">#558b2f</color>
     <color name="openfeed_light_green_900">#33691e</color>
