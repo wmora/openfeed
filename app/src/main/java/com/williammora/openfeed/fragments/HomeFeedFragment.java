@@ -2,6 +2,7 @@ package com.williammora.openfeed.fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.williammora.openfeed.R;
+import com.williammora.openfeed.activities.StatusActivity;
 import com.williammora.openfeed.adapters.FeedAdapter;
 import com.williammora.openfeed.dto.UserFeed;
 import com.williammora.openfeed.listeners.OnRecyclerViewItemClickListener;
@@ -193,8 +195,10 @@ public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
 
     @Override
     public void onItemClick(View view, Status status) {
-        // TODO: Open detail activity
-        Log.d(TAG, "Open detail for status " + status.getId());
+        Intent intent = new Intent();
+        intent.setClass(getActivity(), StatusActivity.class);
+        intent.putExtra(StatusActivity.EXTRA_STATUS, status);
+        startActivity(intent);
     }
 
     private class HomeFeedTask extends AsyncTask<Paging, Void, List<Status>> {
