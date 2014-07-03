@@ -17,6 +17,14 @@
         <item name="android:textSize">12sp</item>
     </style>
 
+    <style name="OpenFeedTheme.SmallText.Secondary">
+        <item name="android:textColor">@color/openfeed_text_secondary_color</item>
+    </style>
+
+    <style name="OpenFeedTheme.SmallText.Tertiary">
+        <item name="android:textColor">@color/openfeed_text_tertiary_color</item>
+    </style>
+
     <style name="OpenFeedTheme.FeedInfo" parent="OpenFeedTheme.SmallText">
         <item name="android:layout_marginTop">8dp</item>
         <item name="android:layout_marginBottom">8dp</item>

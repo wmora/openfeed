@@ -81,9 +81,9 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
 
         public ViewHolder(View v) {
             super(v);
-            mFeedUserPic = (ImageView) v.findViewById(R.id.feed_user_pic);
-            mFeedUserName = (TextView) v.findViewById(R.id.feed_user_name);
-            mFeedUserScreenName = (TextView) v.findViewById(R.id.feed_user_screenname);
+            mFeedUserPic = (ImageView) v.findViewById(R.id.status_user_pic);
+            mFeedUserName = (TextView) v.findViewById(R.id.status_user_name);
+            mFeedUserScreenName = (TextView) v.findViewById(R.id.status_user_screenname);
             mFeedText = (TextView) v.findViewById(R.id.feed_text);
         }
 

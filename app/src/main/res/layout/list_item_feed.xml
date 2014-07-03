@@ -1,89 +1,86 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="5dp"
-    android:paddingTop="5dp">
+    android:padding="5dp">
 
     <android.support.v7.widget.CardView
-        android:id="@+id/feed_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        card_view:cardCornerRadius="4dp">
+        card_view:cardCornerRadius="2dp">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:id="@+id/feed_user_pic"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_centerVertical="true"
-                android:layout_margin="16dp"
-                android:src="@drawable/ic_launcher" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <RelativeLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/feed_user_pic"
-                android:orientation="vertical">
+                android:id="@+id/status_header"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/status_user_pic"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_centerVertical="true"
+                    android:layout_margin="16dp"
+                    android:src="@drawable/ic_launcher" />
 
                 <LinearLayout
-                    android:id="@+id/feed_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/status_user_pic"
+                    android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/feed_user_name"
-                        style="@style/OpenFeedTheme.FeedInfo"
+                        android:id="@+id/status_user_name"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginRight="10dp"
-                        android:text="@string/feed_user_name_placeholder"
-                        android:textAllCaps="true"
+                        android:layout_height="wrap_content"
+                        android:text="@string/status_user_name_placeholder"
                         android:textStyle="bold" />
 
-                    <TextView
-                        android:id="@+id/feed_user_screenname"
-                        style="@style/OpenFeedTheme.FeedInfo"
+                    <LinearLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:text="@string/feed_user_screenname_placeholder" />
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/status_user_screenname"
+                            style="@style/OpenFeedTheme.SmallText.Secondary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:text="@string/status_user_screenname_placeholder" />
+
+                        <TextView
+                            android:id="@+id/status_created"
+                            style="@style/OpenFeedTheme.SmallText.Tertiary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/status_created_placeholder" />
+                    </LinearLayout>
                 </LinearLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/feed_text"
                     style="@style/OpenFeedTheme.Status"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/feed_info"
-                    android:text="@string/feed_text_placeholder" />
-
-                <LinearLayout
-                    android:id="@+id/feed_stats"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/feed_text"
-                    android:orientation="horizontal"
-                    android:paddingBottom="8dp"
-                    android:visibility="gone">
-
-                    <TextView
-                        style="@style/OpenFeedTheme.SmallText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent" />
-
-                    <TextView
-                        style="@style/OpenFeedTheme.SmallText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent" />
-                </LinearLayout>
+                    android:text="@string/status_text_placeholder" />
 
             </RelativeLayout>
-        </RelativeLayout>
+        </LinearLayout>
 
     </android.support.v7.widget.CardView>
-
-</LinearLayout>
+</FrameLayout>
