@@ -97,6 +97,6 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedViewHolder> implements
 
     public void addAll(int i, List<Status> statuses) {
         mDataset.addAll(i, statuses);
-        notifyItemRangeInserted(0, statuses.size());
+        notifyItemRangeInserted(i, statuses.size());
     }
 }
