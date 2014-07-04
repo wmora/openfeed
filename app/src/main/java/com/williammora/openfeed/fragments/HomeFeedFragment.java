@@ -150,8 +150,8 @@ public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
             return;
         }
 
-        // Timeline was empty
         if (mUserFeed.getStatuses().isEmpty()) {
+            // Timeline was empty
             statuses.addAll(mUserFeed.getStatuses());
             mUserFeed.setStatuses(statuses);
             mAdapter.setDataset(mUserFeed.getStatuses());
@@ -161,7 +161,7 @@ public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
             mUserFeed.getStatuses().addAll(statuses);
             mAdapter.addAll(statuses);
         } else {
-            // Latest statuses
+            // Latest statuses were requested
             mUserFeed.getStatuses().addAll(0, statuses);
             mAdapter.addAll(0, statuses);
             mFeed.smoothScrollToPosition(0);
