@@ -46,13 +46,13 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> im
         Status status = mDataset.get(position);
 
         if (status.isRetweet()) {
-            if (mContext != null) {
-                String retweetedBy = String.format(mContext.getResources()
-                        .getString(R.string.status_retweeted_by_prefix), status.getUser().getName());
-                holder.mRetweetedByText.setText(retweetedBy);
-                holder.mRetweetedByLayout.setVisibility(View.VISIBLE);
-            }
+            String retweetedBy = String.format(mContext.getResources()
+                    .getString(R.string.status_retweeted_by_prefix), status.getUser().getName());
+            holder.mRetweetedByText.setText(retweetedBy);
+            holder.mRetweetedByLayout.setVisibility(View.VISIBLE);
             status = status.getRetweetedStatus();
+        } else {
+            holder.mRetweetedByLayout.setVisibility(View.GONE);
         }
 
         Picasso.with(holder.mStatusUserPic.getContext()).cancelRequest(holder.mStatusUserPic);
