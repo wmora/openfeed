@@ -5,12 +5,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.williammora.openfeed.R;
+import com.williammora.openfeed.adapters.viewholders.FeedViewHolder;
 import com.williammora.openfeed.listeners.OnRecyclerViewItemClickListener;
 import com.williammora.openfeed.utils.StatusUtils;
 import com.williammora.openfeed.utils.UserUtils;
@@ -19,7 +18,7 @@ import java.util.List;
 
 import twitter4j.Status;
 
-public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> implements View.OnClickListener {
+public class FeedAdapter extends RecyclerView.Adapter<FeedViewHolder> implements View.OnClickListener {
 
     private List<Status> mDataset;
     private Context mContext;
@@ -32,17 +31,17 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> im
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int i) {
+    public FeedViewHolder onCreateViewHolder(ViewGroup parent, int i) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item_status, parent, false);
         v.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
         v.setOnClickListener(this);
-        return new ViewHolder(v);
+        return new FeedViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(FeedViewHolder holder, int position) {
         Status status = mDataset.get(position);
 
         if (status.isRetweet()) {
@@ -61,6 +60,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> im
                 .error(R.drawable.ic_launcher)
                 .into(holder.mStatusUserPic);
         holder.mStatusText.setText(status.getText());
+        holder.linkifyStatusText();
         holder.mStatusUserName.setText(status.getUser().getName());
         holder.mStatusUserScreenName.setText(UserUtils.getFullScreenName(status.getUser()));
         holder.mStatusCreated.setText(StatusUtils.getCreatedText(status));
@@ -98,30 +98,5 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> im
     public void addAll(int i, List<Status> statuses) {
         mDataset.addAll(i, statuses);
         notifyItemRangeInserted(0, statuses.size());
-    }
-
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        public ImageView mStatusUserPic;
-        public TextView mStatusUserName;
-        public TextView mStatusUserScreenName;
-        public TextView mStatusText;
-        public TextView mStatusCreated;
-        public LinearLayout mRetweetedByLayout;
-        public TextView mRetweetedByText;
-
-        public ViewHolder(View v) {
-            super(v);
-            mStatusUserPic = (ImageView) v.findViewById(R.id.status_user_pic);
-            mStatusUserName = (TextView) v.findViewById(R.id.status_user_name);
-            mStatusUserScreenName = (TextView) v.findViewById(R.id.status_user_screenname);
-            mStatusText = (TextView) v.findViewById(R.id.status_text);
-            mStatusCreated = (TextView) v.findViewById(R.id.status_created);
-            mRetweetedByLayout = (LinearLayout) v.findViewById(R.id.status_retweeted_by_layout);
-            mRetweetedByText = (TextView) v.findViewById(R.id.status_retweeted_by);
-        }
-
-        public void setTag(Status tag) {
-            itemView.setTag(tag);
-        }
     }
 }
