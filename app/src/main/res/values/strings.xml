@@ -19,6 +19,9 @@
     <string name="status_retweeted_by_placeholder">Retweeted by William Mora</string>
     <string name="status_created_placeholder">24 mins ago</string>
     <string name="status_text_placeholder">This is a test tweet, I\'m adding @other_users and adding a bunch of other text. Lorem ipsum blablabla, it\'s time to use Samuel L. Ipsum yeh</string>
+    <string name="replies_quantity_placeholder">24</string>
+    <string name="retweets_quantity_placeholder">24</string>
+    <string name="favorites_quantity_placeholder">24</string>
 
     <!-- Status -->
     <string name="title_activity_status">Status</string>

@@ -32,6 +32,8 @@ public class FeedViewHolder extends RecyclerView.ViewHolder {
     public TextView mStatusCreated;
     public LinearLayout mRetweetedByLayout;
     public TextView mRetweetedByText;
+    public TextView mRetweetsText;
+    public TextView mFavoritesText;
 
     public FeedViewHolder(View v) {
         super(v);
@@ -42,6 +44,8 @@ public class FeedViewHolder extends RecyclerView.ViewHolder {
         mStatusCreated = (TextView) v.findViewById(R.id.status_created);
         mRetweetedByLayout = (LinearLayout) v.findViewById(R.id.status_retweeted_by_layout);
         mRetweetedByText = (TextView) v.findViewById(R.id.status_retweeted_by);
+        mRetweetsText = (TextView) v.findViewById(R.id.status_retweets);
+        mFavoritesText = (TextView) v.findViewById(R.id.status_favorites);
     }
 
     public void setTag(Status tag) {

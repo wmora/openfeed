@@ -97,8 +97,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:orientation="vertical">
+                android:layout_margin="16dp">
 
                 <TextView
                     android:id="@+id/status_text"
@@ -108,6 +107,61 @@
                     android:text="@string/status_text_placeholder" />
 
             </RelativeLayout>
+
+            <include layout="@layout/solid_line" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:src="@drawable/retweet_secondary_color_small" />
+
+                    <TextView
+                        android:id="@+id/status_retweets"
+                        style="@style/OpenFeedTheme.SmallerText.Secondary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/retweets_quantity_placeholder" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:src="@drawable/favorite_secondary_color_small" />
+
+                    <TextView
+                        android:id="@+id/status_favorites"
+                        style="@style/OpenFeedTheme.SmallerText.Secondary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/favorites_quantity_placeholder" />
+                </LinearLayout>
+
+            </LinearLayout>
         </LinearLayout>
 
     </android.support.v7.widget.CardView>

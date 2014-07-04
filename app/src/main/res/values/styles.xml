@@ -33,6 +33,10 @@
         <item name="android:textColor">@color/openfeed_text_secondary_color</item>
     </style>
 
+    <style name="OpenFeedTheme.SmallerText.Tertiary">
+        <item name="android:textColor">@color/openfeed_text_tertiary_color</item>
+    </style>
+
     <style name="OpenFeedTheme.FeedInfo" parent="OpenFeedTheme.SmallText">
         <item name="android:layout_marginTop">8dp</item>
         <item name="android:layout_marginBottom">8dp</item>
@@ -40,8 +44,6 @@
 
     <style name="OpenFeedTheme.Status">
         <item name="android:textSize">14sp</item>
-        <item name="android:paddingBottom">8dp</item>
-        <item name="android:paddingRight">8dp</item>
     </style>
 
 </resources>

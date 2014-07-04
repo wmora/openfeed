@@ -59,11 +59,13 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedViewHolder> implements
                 .load(status.getUser().getBiggerProfileImageURLHttps())
                 .error(R.drawable.ic_launcher)
                 .into(holder.mStatusUserPic);
-        holder.mStatusText.setText(status.getText());
-        holder.linkifyStatusText();
         holder.mStatusUserName.setText(status.getUser().getName());
         holder.mStatusUserScreenName.setText(UserUtils.getFullScreenName(status.getUser()));
         holder.mStatusCreated.setText(StatusUtils.getCreatedText(status));
+        holder.mStatusText.setText(status.getText());
+        holder.mRetweetsText.setText(String.format("%d", status.getRetweetCount()));
+        holder.mFavoritesText.setText(String.format("%d", status.getFavoriteCount()));
+        holder.linkifyStatusText();
         holder.setTag(status);
     }
 
