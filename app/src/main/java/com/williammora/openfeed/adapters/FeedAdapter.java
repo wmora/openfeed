@@ -41,7 +41,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedViewHolder> implements
     }
 
     @Override
-    public void onBindViewHolder(FeedViewHolder holder, int position) {
+    public void onBindViewHolder(final FeedViewHolder holder, int position) {
         Status status = mDataset.get(position);
 
         if (status.isRetweet()) {
@@ -65,6 +65,28 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedViewHolder> implements
         holder.mStatusText.setText(status.getText());
         holder.mRetweetsText.setText(String.format("%d", status.getRetweetCount()));
         holder.mFavoritesText.setText(String.format("%d", status.getFavoriteCount()));
+        holder.mRetweetsText.setTextColor(mContext.getResources().getColor(R.color.openfeed_text_secondary_color));
+        holder.mRetweetsButton.setSelected(false);
+        holder.mRetweetsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO: Retweet
+                view.setSelected(!view.isSelected());
+                int color = view.isSelected() ? R.color.openfeed_text_primary_color : R.color.openfeed_text_secondary_color;
+                holder.mRetweetsText.setTextColor(mContext.getResources().getColor(color));
+            }
+        });
+        holder.mFavoritesText.setTextColor(mContext.getResources().getColor(R.color.openfeed_text_secondary_color));
+        holder.mFavoritesButton.setSelected(false);
+        holder.mFavoritesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO: Favorite
+                view.setSelected(!view.isSelected());
+                int color = view.isSelected() ? R.color.openfeed_text_primary_color : R.color.openfeed_text_secondary_color;
+                holder.mFavoritesText.setTextColor(mContext.getResources().getColor(color));
+            }
+        });
         holder.linkifyStatusText();
         holder.setTag(status);
     }

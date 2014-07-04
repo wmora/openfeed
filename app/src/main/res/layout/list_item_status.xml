@@ -117,11 +117,15 @@
                 android:orientation="horizontal">
 
                 <LinearLayout
+                    android:id="@+id/status_retweets_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
-                    android:orientation="horizontal">
+                    android:background="@drawable/selector_status_action_button"
+                    android:clickable="true"
+                    android:orientation="horizontal"
+                    android:padding="8dp">
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -140,11 +144,15 @@
 
 
                 <LinearLayout
+                    android:id="@+id/status_favorites_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
-                    android:orientation="horizontal">
+                    android:background="@drawable/selector_status_action_button"
+                    android:clickable="true"
+                    android:orientation="horizontal"
+                    android:padding="8dp">
 
                     <ImageView
                         android:layout_width="wrap_content"
