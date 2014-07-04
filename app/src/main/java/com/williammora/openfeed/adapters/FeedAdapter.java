@@ -1,5 +1,6 @@
 package com.williammora.openfeed.adapters;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,11 +22,13 @@ import twitter4j.Status;
 public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> implements View.OnClickListener {
 
     private List<Status> mDataset;
+    private Context mContext;
 
     private OnRecyclerViewItemClickListener<Status> itemClickListener;
 
-    public FeedAdapter(List<Status> dataset) {
+    public FeedAdapter(List<Status> dataset, Context context) {
         mDataset = dataset;
+        mContext = context;
     }
 
     @Override
@@ -43,6 +46,12 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> im
         Status status = mDataset.get(position);
 
         if (status.isRetweet()) {
+            if (mContext != null) {
+                String retweetedBy = String.format(mContext.getResources()
+                        .getString(R.string.status_retweeted_by_prefix), status.getUser().getName());
+                holder.mRetweetedByText.setText(retweetedBy);
+                holder.mRetweetedByLayout.setVisibility(View.VISIBLE);
+            }
             status = status.getRetweetedStatus();
         }
 
@@ -97,6 +106,8 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> im
         public TextView mStatusUserScreenName;
         public TextView mStatusText;
         public TextView mStatusCreated;
+        public LinearLayout mRetweetedByLayout;
+        public TextView mRetweetedByText;
 
         public ViewHolder(View v) {
             super(v);
@@ -105,6 +116,8 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> im
             mStatusUserScreenName = (TextView) v.findViewById(R.id.status_user_screenname);
             mStatusText = (TextView) v.findViewById(R.id.status_text);
             mStatusCreated = (TextView) v.findViewById(R.id.status_created);
+            mRetweetedByLayout = (LinearLayout) v.findViewById(R.id.status_retweeted_by_layout);
+            mRetweetedByText = (TextView) v.findViewById(R.id.status_retweeted_by);
         }
 
         public void setTag(Status tag) {

@@ -31,6 +31,31 @@
                     android:src="@drawable/ic_launcher" />
 
                 <LinearLayout
+                    android:id="@+id/status_retweeted_by_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_toRightOf="@+id/status_user_pic"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/retweet_secondary_color_small" />
+
+                    <TextView
+                        android:id="@+id/status_retweeted_by"
+                        style="@style/OpenFeedTheme.SmallerText.Secondary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="10dp"
+                        android:text="@string/status_retweeted_by_placeholder" />
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
