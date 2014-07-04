@@ -141,7 +141,10 @@ public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
         mFeedContainer.setEnabled(true);
     }
 
-    public void updateStatuses(List<Status> statuses) {
+    public void updateFeed(UserFeed userFeed) {
+
+        List<Status> statuses = userFeed.getStatuses();
+        Paging paging = userFeed.getPaging();
 
         if (statuses == null || statuses.isEmpty()) {
             return;
@@ -152,7 +155,7 @@ public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
             statuses.addAll(mUserFeed.getStatuses());
             mUserFeed.setStatuses(statuses);
             mAdapter.setDataset(mUserFeed.getStatuses());
-        } else if (mUserFeed.getStatuses().get(mUserFeed.getStatuses().size() - 1).getId() == statuses.get(0).getId()) {
+        } else if (paging.getMaxId() > 1) {
             // Previous statuses were requested
             statuses.remove(0);
             mUserFeed.getStatuses().addAll(statuses);
@@ -164,6 +167,7 @@ public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
             mFeed.smoothScrollToPosition(0);
         }
 
+        mUserFeed.setPaging(paging);
     }
 
     public void onScrollStateChanged(int i) {
@@ -201,12 +205,16 @@ public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
         startActivity(intent);
     }
 
-    private class HomeFeedTask extends AsyncTask<Paging, Void, List<Status>> {
+    private class HomeFeedTask extends AsyncTask<Paging, Void, UserFeed> {
 
         @Override
-        protected List<twitter4j.Status> doInBackground(Paging... pagings) {
+        protected UserFeed doInBackground(Paging... pagings) {
             try {
-                return mTwitter.getHomeTimeline(mPaging);
+                List<twitter4j.Status> statuses = mTwitter.getHomeTimeline(pagings[0]);
+                UserFeed userFeed = new UserFeed();
+                userFeed.setPaging(pagings[0]);
+                userFeed.setStatuses(statuses);
+                return userFeed;
             } catch (TwitterException e) {
                 Log.e(TAG, e.getMessage(), e);
                 return null;
@@ -220,10 +228,10 @@ public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
         }
 
         @Override
-        protected void onPostExecute(List<twitter4j.Status> statuses) {
-            super.onPostExecute(statuses);
-            if (statuses != null) {
-                updateStatuses(statuses);
+        protected void onPostExecute(UserFeed userFeed) {
+            super.onPostExecute(userFeed);
+            if (userFeed != null) {
+                updateFeed(userFeed);
             }
             onRequestCompleted();
         }
