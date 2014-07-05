@@ -4,6 +4,11 @@
     android:layout_height="match_parent"
     tools:context=".fragments.BlankFragment">
 
-    <include layout="@layout/status_template" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include layout="@layout/status_template" />
+    </ScrollView>
 
 </FrameLayout>
