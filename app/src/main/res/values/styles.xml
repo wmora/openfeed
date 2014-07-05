@@ -33,6 +33,10 @@
         <item name="android:textColor">@color/openfeed_text_secondary_color</item>
     </style>
 
+    <style name="OpenFeedTheme.SmallerText.Secondary.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="OpenFeedTheme.SmallerText.Tertiary">
         <item name="android:textColor">@color/openfeed_text_tertiary_color</item>
     </style>

@@ -74,6 +74,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedViewHolder> implements
                 view.setSelected(!view.isSelected());
                 int color = view.isSelected() ? R.color.openfeed_text_primary_color : R.color.openfeed_text_secondary_color;
                 holder.mRetweetsText.setTextColor(mContext.getResources().getColor(color));
+                holder.mRetweetIcon.setSelected(view.isSelected());
             }
         });
         holder.mFavoritesText.setTextColor(mContext.getResources().getColor(R.color.openfeed_text_secondary_color));
@@ -85,6 +86,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedViewHolder> implements
                 view.setSelected(!view.isSelected());
                 int color = view.isSelected() ? R.color.openfeed_text_primary_color : R.color.openfeed_text_secondary_color;
                 holder.mFavoritesText.setTextColor(mContext.getResources().getColor(color));
+                holder.mFavoriteIcon.setSelected(view.isSelected());
             }
         });
         holder.linkifyStatusText();

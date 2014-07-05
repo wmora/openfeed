@@ -128,14 +128,15 @@
                     android:padding="8dp">
 
                     <ImageView
+                        android:id="@+id/status_retweet_icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="5dp"
-                        android:src="@drawable/retweet_secondary_color_small" />
+                        android:src="@drawable/selector_retweet_icon" />
 
                     <TextView
                         android:id="@+id/status_retweets"
-                        style="@style/OpenFeedTheme.SmallerText.Secondary"
+                        style="@style/OpenFeedTheme.SmallerText.Secondary.Bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -155,14 +156,15 @@
                     android:padding="8dp">
 
                     <ImageView
+                        android:id="@+id/status_favorite_icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="5dp"
-                        android:src="@drawable/favorite_secondary_color_small" />
+                        android:src="@drawable/selector_favorite_icon" />
 
                     <TextView
                         android:id="@+id/status_favorites"
-                        style="@style/OpenFeedTheme.SmallerText.Secondary"
+                        style="@style/OpenFeedTheme.SmallerText.Secondary.Bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
