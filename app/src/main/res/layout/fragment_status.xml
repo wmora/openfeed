@@ -4,10 +4,6 @@
     android:layout_height="match_parent"
     tools:context=".fragments.BlankFragment">
 
-    <TextView
-        android:id="@+id/status_text"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Implement me" />
+    <include layout="@layout/status_template" />
 
 </FrameLayout>
