@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.util.Linkify;
 import android.util.Patterns;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -17,6 +18,7 @@ import com.williammora.openfeed.utils.UserUtils;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import twitter4j.MediaEntity;
 import twitter4j.Status;
 
 public class StatusViewHolder extends RecyclerView.ViewHolder {
@@ -35,6 +37,7 @@ public class StatusViewHolder extends RecyclerView.ViewHolder {
     public TextView mStatusUserName;
     public TextView mStatusUserScreenName;
     public TextView mStatusText;
+    public LinearLayout mStatusImageHolder;
     public TextView mStatusCreated;
     public LinearLayout mRetweetedByLayout;
     public TextView mRetweetedByText;
@@ -53,6 +56,7 @@ public class StatusViewHolder extends RecyclerView.ViewHolder {
         mStatusUserName = (TextView) v.findViewById(R.id.status_user_name);
         mStatusUserScreenName = (TextView) v.findViewById(R.id.status_user_screenname);
         mStatusText = (TextView) v.findViewById(R.id.status_text);
+        mStatusImageHolder = (LinearLayout) v.findViewById(R.id.status_image_holder);
         mStatusCreated = (TextView) v.findViewById(R.id.status_created);
         mRetweetedByLayout = (LinearLayout) v.findViewById(R.id.status_retweeted_by_layout);
         mRetweetedByText = (TextView) v.findViewById(R.id.status_retweeted_by);
@@ -74,6 +78,20 @@ public class StatusViewHolder extends RecyclerView.ViewHolder {
             status = status.getRetweetedStatus();
         } else {
             mRetweetedByLayout.setVisibility(View.GONE);
+        }
+
+        mStatusImageHolder.removeAllViews();
+
+        MediaEntity[] mediaEntities = status.getMediaEntities();
+
+        for (MediaEntity mediaEntity : mediaEntities) {
+            ImageView statusImage = (ImageView) LayoutInflater.from(mContext).inflate(R.layout.status_image, null);
+            Picasso.with(statusImage.getContext()).cancelRequest(statusImage);
+            Picasso.with(statusImage.getContext())
+                    .load(mediaEntity.getMediaURLHttps())
+                    .error(R.color.cardview_light_background)
+                    .into(statusImage);
+            mStatusImageHolder.addView(statusImage);
         }
 
         Picasso.with(mStatusUserPic.getContext()).cancelRequest(mStatusUserPic);
