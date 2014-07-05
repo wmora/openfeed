@@ -65,6 +65,12 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedViewHolder> implements
         holder.mStatusText.setText(status.getText());
         holder.mRetweetsText.setText(String.format("%d", status.getRetweetCount()));
         holder.mFavoritesText.setText(String.format("%d", status.getFavoriteCount()));
+        holder.mReplyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO: Reply
+            }
+        });
         holder.mRetweetsText.setTextColor(mContext.getResources().getColor(R.color.openfeed_text_secondary_color));
         holder.mRetweetsButton.setSelected(false);
         holder.mRetweetsButton.setOnClickListener(new View.OnClickListener() {

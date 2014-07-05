@@ -34,6 +34,7 @@ public class FeedViewHolder extends RecyclerView.ViewHolder {
     public TextView mRetweetedByText;
     public TextView mRetweetsText;
     public TextView mFavoritesText;
+    public LinearLayout mReplyButton;
     public LinearLayout mRetweetsButton;
     public LinearLayout mFavoritesButton;
     public ImageView mRetweetIcon;
@@ -50,6 +51,7 @@ public class FeedViewHolder extends RecyclerView.ViewHolder {
         mRetweetedByText = (TextView) v.findViewById(R.id.status_retweeted_by);
         mRetweetsText = (TextView) v.findViewById(R.id.status_retweets);
         mFavoritesText = (TextView) v.findViewById(R.id.status_favorites);
+        mReplyButton = (LinearLayout) v.findViewById(R.id.status_reply_button);
         mRetweetsButton = (LinearLayout) v.findViewById(R.id.status_retweets_button);
         mFavoritesButton = (LinearLayout) v.findViewById(R.id.status_favorites_button);
         mRetweetIcon = (ImageView) v.findViewById(R.id.status_retweet_icon);
