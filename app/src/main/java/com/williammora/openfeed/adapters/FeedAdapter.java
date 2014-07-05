@@ -9,7 +9,7 @@ import android.widget.LinearLayout;
 
 import com.squareup.picasso.Picasso;
 import com.williammora.openfeed.R;
-import com.williammora.openfeed.adapters.viewholders.FeedViewHolder;
+import com.williammora.openfeed.adapters.viewholders.StatusViewHolder;
 import com.williammora.openfeed.listeners.OnRecyclerViewItemClickListener;
 import com.williammora.openfeed.utils.StatusUtils;
 import com.williammora.openfeed.utils.UserUtils;
@@ -18,7 +18,7 @@ import java.util.List;
 
 import twitter4j.Status;
 
-public class FeedAdapter extends RecyclerView.Adapter<FeedViewHolder> implements View.OnClickListener {
+public class FeedAdapter extends RecyclerView.Adapter<StatusViewHolder> implements View.OnClickListener {
 
     private List<Status> mDataset;
     private Context mContext;
@@ -31,17 +31,17 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedViewHolder> implements
     }
 
     @Override
-    public FeedViewHolder onCreateViewHolder(ViewGroup parent, int i) {
+    public StatusViewHolder onCreateViewHolder(ViewGroup parent, int i) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item_status, parent, false);
         v.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
         v.setOnClickListener(this);
-        return new FeedViewHolder(v);
+        return new StatusViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(final FeedViewHolder holder, int position) {
+    public void onBindViewHolder(final StatusViewHolder holder, int position) {
         Status status = mDataset.get(position);
 
         if (status.isRetweet()) {

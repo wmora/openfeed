@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 
 import twitter4j.Status;
 
-public class FeedViewHolder extends RecyclerView.ViewHolder {
+public class StatusViewHolder extends RecyclerView.ViewHolder {
 
     private static final Pattern MENTION_PATTERN = Pattern.compile("@([A-Za-z0-9_-]+)");
     private static final String MENTION_SCHEME = "http://www.twitter.com/";
@@ -40,7 +40,7 @@ public class FeedViewHolder extends RecyclerView.ViewHolder {
     public ImageView mRetweetIcon;
     public ImageView mFavoriteIcon;
 
-    public FeedViewHolder(View v) {
+    public StatusViewHolder(View v) {
         super(v);
         mStatusUserPic = (ImageView) v.findViewById(R.id.status_user_pic);
         mStatusUserName = (TextView) v.findViewById(R.id.status_user_name);
