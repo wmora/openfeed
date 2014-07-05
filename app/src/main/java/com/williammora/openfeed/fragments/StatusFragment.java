@@ -29,7 +29,7 @@ public class StatusFragment extends Fragment {
             mStatus = (Status) getActivity().getIntent().getSerializableExtra(StatusActivity.EXTRA_STATUS);
         }
 
-        StatusViewHolder viewHolder = new StatusViewHolder(view, getActivity());
+        StatusViewHolder viewHolder = new StatusViewHolder(view, view.getContext());
         viewHolder.updateView(mStatus);
 
         return view;
