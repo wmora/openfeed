@@ -174,6 +174,9 @@ public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
     }
 
     public void onScrolled(int x, int y) {
+        if (mRequestingMore) {
+            return;
+        }
         if (feedBottomReached()) {
             requestPreviousStatuses();
         }
@@ -189,7 +192,11 @@ public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
     private boolean feedBottomReached() {
         // Since we assigned the Status as the View tag we need to compare whatever is last
         // on screen vs the last element on the status list
-        Status currentBottomStatus = (Status) mFeed.getChildAt(mFeed.getChildCount() - 1).getTag();
+        View bottomChildView = mFeed.getChildAt(mFeed.getChildCount() - 1);
+        if (bottomChildView == null) {
+            return false;
+        }
+        Status currentBottomStatus = (Status) bottomChildView.getTag();
         Status lastStatus = mUserFeed.getStatuses().get(mUserFeed.getStatuses().size() - 1);
         if (lastStatus.isRetweet()) {
             lastStatus = lastStatus.getRetweetedStatus();
