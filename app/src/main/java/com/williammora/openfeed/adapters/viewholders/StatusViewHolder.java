@@ -1,5 +1,6 @@
 package com.williammora.openfeed.adapters.viewholders;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.util.Linkify;
 import android.util.Patterns;
@@ -8,7 +9,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
 import com.williammora.openfeed.R;
+import com.williammora.openfeed.utils.StatusUtils;
+import com.williammora.openfeed.utils.UserUtils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -25,6 +29,8 @@ public class StatusViewHolder extends RecyclerView.ViewHolder {
 
     private static final Pattern URL_PATTERN = Patterns.WEB_URL;
 
+    private Context mContext;
+
     public ImageView mStatusUserPic;
     public TextView mStatusUserName;
     public TextView mStatusUserScreenName;
@@ -40,8 +46,9 @@ public class StatusViewHolder extends RecyclerView.ViewHolder {
     public ImageView mRetweetIcon;
     public ImageView mFavoriteIcon;
 
-    public StatusViewHolder(View v) {
+    public StatusViewHolder(View v, Context context) {
         super(v);
+        mContext = context;
         mStatusUserPic = (ImageView) v.findViewById(R.id.status_user_pic);
         mStatusUserName = (TextView) v.findViewById(R.id.status_user_name);
         mStatusUserScreenName = (TextView) v.findViewById(R.id.status_user_screenname);
@@ -56,6 +63,62 @@ public class StatusViewHolder extends RecyclerView.ViewHolder {
         mFavoritesButton = (LinearLayout) v.findViewById(R.id.status_favorites_button);
         mRetweetIcon = (ImageView) v.findViewById(R.id.status_retweet_icon);
         mFavoriteIcon = (ImageView) v.findViewById(R.id.status_favorite_icon);
+    }
+
+    public void updateView(Status status) {
+        if (status.isRetweet()) {
+            String retweetedBy = String.format(mContext.getResources()
+                    .getString(R.string.status_retweeted_by_prefix), status.getUser().getName());
+            mRetweetedByText.setText(retweetedBy);
+            mRetweetedByLayout.setVisibility(View.VISIBLE);
+            status = status.getRetweetedStatus();
+        } else {
+            mRetweetedByLayout.setVisibility(View.GONE);
+        }
+
+        Picasso.with(mStatusUserPic.getContext()).cancelRequest(mStatusUserPic);
+        Picasso.with(mStatusUserPic.getContext())
+                .load(status.getUser().getBiggerProfileImageURLHttps())
+                .error(R.drawable.ic_launcher)
+                .into(mStatusUserPic);
+        mStatusUserName.setText(status.getUser().getName());
+        mStatusUserScreenName.setText(UserUtils.getFullScreenName(status.getUser()));
+        mStatusCreated.setText(StatusUtils.getCreatedText(status));
+        mStatusText.setText(status.getText());
+        mRetweetsText.setText(String.format("%d", status.getRetweetCount()));
+        mFavoritesText.setText(String.format("%d", status.getFavoriteCount()));
+        mReplyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO: Reply
+            }
+        });
+        mRetweetsText.setTextColor(mContext.getResources().getColor(R.color.openfeed_text_secondary_color));
+        mRetweetsButton.setSelected(false);
+        mRetweetsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO: Retweet
+                view.setSelected(!view.isSelected());
+                int color = view.isSelected() ? R.color.openfeed_text_primary_color : R.color.openfeed_text_secondary_color;
+                mRetweetsText.setTextColor(mContext.getResources().getColor(color));
+                mRetweetIcon.setSelected(view.isSelected());
+            }
+        });
+        mFavoritesText.setTextColor(mContext.getResources().getColor(R.color.openfeed_text_secondary_color));
+        mFavoritesButton.setSelected(false);
+        mFavoritesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO: Favorite
+                view.setSelected(!view.isSelected());
+                int color = view.isSelected() ? R.color.openfeed_text_primary_color : R.color.openfeed_text_secondary_color;
+                mFavoritesText.setTextColor(mContext.getResources().getColor(color));
+                mFavoriteIcon.setSelected(view.isSelected());
+            }
+        });
+        linkifyStatusText();
+        setTag(status);
     }
 
     public void setTag(Status tag) {
