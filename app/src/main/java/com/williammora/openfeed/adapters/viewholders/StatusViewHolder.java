@@ -87,14 +87,17 @@ public class StatusViewHolder extends RecyclerView.ViewHolder {
         MediaEntity[] mediaEntities = status.getMediaEntities();
 
         for (MediaEntity mediaEntity : mediaEntities) {
-            ImageView statusImage = (ImageView) LayoutInflater.from(mContext).inflate(R.layout.status_image, null);
-            Picasso.with(statusImage.getContext()).cancelRequest(statusImage);
-            Picasso.with(statusImage.getContext())
-                    .load(mediaEntity.getMediaURLHttps())
-                    .error(R.color.cardview_light_background)
-                    .transform(new StatusImageTransformation(statusImage))
-                    .into(statusImage);
-            mStatusImageHolder.addView(statusImage);
+            // Only photos for now
+            if (mediaEntity.getType().equals("photo")) {
+                final ImageView statusImage = (ImageView) LayoutInflater.from(mContext).inflate(R.layout.status_image, null);
+                Picasso.with(statusImage.getContext()).cancelRequest(statusImage);
+                Picasso.with(statusImage.getContext())
+                        .load(mediaEntity.getMediaURLHttps())
+                        .error(R.color.cardview_light_background)
+                        .transform(new StatusImageTransformation(itemView, status.getId()))
+                        .into(statusImage);
+                mStatusImageHolder.addView(statusImage);
+            }
         }
 
         Picasso.with(mStatusUserPic.getContext()).cancelRequest(mStatusUserPic);
@@ -161,19 +164,19 @@ public class StatusViewHolder extends RecyclerView.ViewHolder {
     private class StatusImageTransformation implements Transformation {
 
         private View mHolder;
-        int mHeight;
-        int mWidth;
+        private long id;
 
-        public StatusImageTransformation(View holder) {
+        public StatusImageTransformation(View holder, long statusId) {
             mHolder = holder;
+            id = statusId;
         }
 
         @Override
         public Bitmap transform(Bitmap source) {
             float aspectRatio = (float) source.getHeight() / (float) source.getWidth();
-            mWidth = mHolder.getWidth();
-            mHeight = (int) (mWidth * aspectRatio);
-            Bitmap transformedBitmap = Bitmap.createScaledBitmap(source, mWidth, mHeight, false);
+            int width = mHolder.getWidth();
+            int height = (int) (width * aspectRatio);
+            Bitmap transformedBitmap = Bitmap.createScaledBitmap(source, width, height, false);
             if (transformedBitmap != source) {
                 source.recycle();
             }
@@ -182,7 +185,7 @@ public class StatusViewHolder extends RecyclerView.ViewHolder {
 
         @Override
         public String key() {
-            return String.format("%s_w%d_h%d", getClass().getSimpleName(), mWidth, mHeight);
+            return String.format("%s_%d_%d", getClass().getSimpleName(), id, mHolder.getId());
         }
     }
 
