@@ -1,6 +1,7 @@
 package com.williammora.openfeed.adapters.viewholders;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.text.util.Linkify;
 import android.util.Patterns;
@@ -11,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 import com.williammora.openfeed.R;
 import com.williammora.openfeed.utils.StatusUtils;
 import com.williammora.openfeed.utils.UserUtils;
@@ -90,6 +92,7 @@ public class StatusViewHolder extends RecyclerView.ViewHolder {
             Picasso.with(statusImage.getContext())
                     .load(mediaEntity.getMediaURLHttps())
                     .error(R.color.cardview_light_background)
+                    .transform(new StatusImageTransformation(statusImage))
                     .into(statusImage);
             mStatusImageHolder.addView(statusImage);
         }
@@ -154,5 +157,33 @@ public class StatusViewHolder extends RecyclerView.ViewHolder {
             return match.group();
         }
     };
+
+    private class StatusImageTransformation implements Transformation {
+
+        private View mHolder;
+        int mHeight;
+        int mWidth;
+
+        public StatusImageTransformation(View holder) {
+            mHolder = holder;
+        }
+
+        @Override
+        public Bitmap transform(Bitmap source) {
+            float aspectRatio = (float) source.getHeight() / (float) source.getWidth();
+            mWidth = mHolder.getWidth();
+            mHeight = (int) (mWidth * aspectRatio);
+            Bitmap transformedBitmap = Bitmap.createScaledBitmap(source, mWidth, mHeight, false);
+            if (transformedBitmap != source) {
+                source.recycle();
+            }
+            return transformedBitmap;
+        }
+
+        @Override
+        public String key() {
+            return String.format("%s_w%d_h%d", getClass().getSimpleName(), mWidth, mHeight);
+        }
+    }
 
 }
