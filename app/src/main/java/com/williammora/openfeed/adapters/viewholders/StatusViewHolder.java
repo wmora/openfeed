@@ -72,6 +72,7 @@ public class StatusViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void updateView(Status status) {
+        setTag(status);
         if (status.isRetweet()) {
             String retweetedBy = String.format(mContext.getResources()
                     .getString(R.string.status_retweeted_by_prefix), status.getUser().getName());
@@ -142,7 +143,6 @@ public class StatusViewHolder extends RecyclerView.ViewHolder {
             }
         });
         linkifyStatusText();
-        setTag(status);
     }
 
     public void setTag(Status tag) {

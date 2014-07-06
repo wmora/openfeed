@@ -198,9 +198,7 @@ public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
         }
         Status currentBottomStatus = (Status) bottomChildView.getTag();
         Status lastStatus = mUserFeed.getStatuses().get(mUserFeed.getStatuses().size() - 1);
-        if (lastStatus.isRetweet()) {
-            lastStatus = lastStatus.getRetweetedStatus();
-        }
+
         return currentBottomStatus == lastStatus;
     }
 
