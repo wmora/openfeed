@@ -86,6 +86,7 @@ public class StatusViewHolder extends RecyclerView.ViewHolder {
         mStatusImageHolder.removeAllViews();
 
         MediaEntity[] mediaEntities = status.getMediaEntities();
+        String statusText = status.getText();
 
         for (MediaEntity mediaEntity : mediaEntities) {
             // Only photos for now
@@ -98,6 +99,7 @@ public class StatusViewHolder extends RecyclerView.ViewHolder {
                         .transform(new StatusImageTransformation(itemView, status.getId()))
                         .into(statusImage);
                 mStatusImageHolder.addView(statusImage);
+                statusText = statusText.replace(mediaEntity.getURL(), "");
             }
         }
 
@@ -109,7 +111,7 @@ public class StatusViewHolder extends RecyclerView.ViewHolder {
         mStatusUserName.setText(status.getUser().getName());
         mStatusUserScreenName.setText(UserUtils.getFullScreenName(status.getUser()));
         mStatusCreated.setText(StatusUtils.getCreatedText(status));
-        mStatusText.setText(status.getText());
+        mStatusText.setText(statusText);
         mRetweetsText.setText(String.format("%d", status.getRetweetCount()));
         mFavoritesText.setText(String.format("%d", status.getFavoriteCount()));
         mReplyButton.setOnClickListener(new View.OnClickListener() {
