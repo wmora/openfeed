@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 import com.williammora.openfeed.R;
+import com.williammora.openfeed.listeners.OnViewHolderClickListener;
 import com.williammora.openfeed.utils.StatusUtils;
 import com.williammora.openfeed.utils.UserUtils;
 
@@ -23,7 +24,7 @@ import java.util.regex.Pattern;
 import twitter4j.MediaEntity;
 import twitter4j.Status;
 
-public class StatusViewHolder extends RecyclerView.ViewHolder {
+public class StatusViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     private static final Pattern MENTION_PATTERN = Pattern.compile("@([A-Za-z0-9_-]+)");
     private static final String MENTION_SCHEME = "http://www.twitter.com/";
@@ -34,6 +35,7 @@ public class StatusViewHolder extends RecyclerView.ViewHolder {
     private static final Pattern URL_PATTERN = Patterns.WEB_URL;
 
     private Context mContext;
+    private OnViewHolderClickListener<Status> mListener;
 
     public ImageView mStatusUserPic;
     public TextView mStatusUserName;
@@ -52,7 +54,13 @@ public class StatusViewHolder extends RecyclerView.ViewHolder {
     public ImageView mFavoriteIcon;
 
     public StatusViewHolder(View v) {
+        this(v, null);
+    }
+
+    public StatusViewHolder(View v, OnViewHolderClickListener<Status> listener) {
         super(v);
+        v.setOnClickListener(this);
+        mListener = listener;
         mContext = v.getContext();
         mStatusUserPic = (ImageView) v.findViewById(R.id.status_user_pic);
         mStatusUserName = (TextView) v.findViewById(R.id.status_user_name);
@@ -145,6 +153,8 @@ public class StatusViewHolder extends RecyclerView.ViewHolder {
             }
         });
         linkifyStatusText();
+        // Set after linkifying so rest of text is handled the same as the view
+        mStatusText.setOnClickListener(this);
     }
 
     public void setTag(Status tag) {
@@ -162,6 +172,14 @@ public class StatusViewHolder extends RecyclerView.ViewHolder {
             return match.group();
         }
     };
+
+    @Override
+    public void onClick(View view) {
+        if (mListener != null) {
+            Status status = (Status) itemView.getTag();
+            mListener.onItemClick(itemView, status);
+        }
+    }
 
     private class StatusImageTransformation implements Transformation {
 

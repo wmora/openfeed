@@ -8,7 +8,7 @@ import android.widget.LinearLayout;
 
 import com.williammora.openfeed.R;
 import com.williammora.openfeed.adapters.viewholders.StatusViewHolder;
-import com.williammora.openfeed.listeners.OnRecyclerViewItemClickListener;
+import com.williammora.openfeed.listeners.OnViewHolderClickListener;
 
 import java.util.List;
 
@@ -18,10 +18,11 @@ public class FeedAdapter extends RecyclerView.Adapter<StatusViewHolder> implemen
 
     private List<Status> mDataset;
 
-    private OnRecyclerViewItemClickListener<Status> itemClickListener;
+    private OnViewHolderClickListener<Status> itemClickListener;
 
-    public FeedAdapter(List<Status> dataset) {
+    public FeedAdapter(List<Status> dataset, OnViewHolderClickListener<Status> vhClickListener) {
         mDataset = dataset;
+        itemClickListener = vhClickListener;
     }
 
     @Override
@@ -31,7 +32,7 @@ public class FeedAdapter extends RecyclerView.Adapter<StatusViewHolder> implemen
         v.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
         v.setOnClickListener(this);
-        return new StatusViewHolder(v);
+        return new StatusViewHolder(v, itemClickListener);
     }
 
     @Override
@@ -43,10 +44,6 @@ public class FeedAdapter extends RecyclerView.Adapter<StatusViewHolder> implemen
     @Override
     public int getItemCount() {
         return mDataset.size();
-    }
-
-    public void setOnItemClickListener(OnRecyclerViewItemClickListener<Status> itemClickListener) {
-        this.itemClickListener = itemClickListener;
     }
 
     @Override

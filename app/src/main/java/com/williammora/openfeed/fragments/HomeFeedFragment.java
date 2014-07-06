@@ -17,7 +17,7 @@ import com.williammora.openfeed.R;
 import com.williammora.openfeed.activities.StatusActivity;
 import com.williammora.openfeed.adapters.FeedAdapter;
 import com.williammora.openfeed.dto.UserFeed;
-import com.williammora.openfeed.listeners.OnRecyclerViewItemClickListener;
+import com.williammora.openfeed.listeners.OnViewHolderClickListener;
 import com.williammora.openfeed.services.TwitterService;
 
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
 
 public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener,
-        RecyclerView.OnScrollListener, OnRecyclerViewItemClickListener<Status> {
+        RecyclerView.OnScrollListener, OnViewHolderClickListener<Status> {
 
     private static String TAG = HomeFeedFragment.class.getSimpleName();
 
@@ -65,8 +65,7 @@ public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
             mUserFeed.setStatuses(new ArrayList<Status>());
         }
 
-        mAdapter = new FeedAdapter(mUserFeed.getStatuses());
-        mAdapter.setOnItemClickListener(this);
+        mAdapter = new FeedAdapter(mUserFeed.getStatuses(), this);
 
         mFeed = (RecyclerView) rootView.findViewById(R.id.feed);
         mFeed.setLayoutManager(new LinearLayoutManager(getActivity()));
