@@ -51,9 +51,9 @@ public class StatusViewHolder extends RecyclerView.ViewHolder {
     public ImageView mRetweetIcon;
     public ImageView mFavoriteIcon;
 
-    public StatusViewHolder(View v, Context context) {
+    public StatusViewHolder(View v) {
         super(v);
-        mContext = context;
+        mContext = v.getContext();
         mStatusUserPic = (ImageView) v.findViewById(R.id.status_user_pic);
         mStatusUserName = (TextView) v.findViewById(R.id.status_user_name);
         mStatusUserScreenName = (TextView) v.findViewById(R.id.status_user_screenname);

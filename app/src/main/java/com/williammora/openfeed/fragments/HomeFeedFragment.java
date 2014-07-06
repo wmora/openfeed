@@ -65,7 +65,7 @@ public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
             mUserFeed.setStatuses(new ArrayList<Status>());
         }
 
-        mAdapter = new FeedAdapter(mUserFeed.getStatuses(), getActivity());
+        mAdapter = new FeedAdapter(mUserFeed.getStatuses());
         mAdapter.setOnItemClickListener(this);
 
         mFeed = (RecyclerView) rootView.findViewById(R.id.feed);
