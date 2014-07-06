@@ -134,27 +134,41 @@ public class StatusViewHolder extends RecyclerView.ViewHolder implements View.On
             @Override
             public void onClick(View view) {
                 // TODO: Retweet
-                view.setSelected(!view.isSelected());
-                int color = view.isSelected() ? R.color.openfeed_text_primary_color : R.color.openfeed_text_secondary_color;
-                mRetweetsText.setTextColor(mContext.getResources().getColor(color));
-                mRetweetIcon.setSelected(view.isSelected());
+                toggleRetweetsButton(view);
             }
         });
+        if (status.isRetweetedByMe()) {
+            toggleRetweetsButton(mRetweetsButton);
+        }
         mFavoritesText.setTextColor(mContext.getResources().getColor(R.color.openfeed_text_secondary_color));
         mFavoritesButton.setSelected(false);
         mFavoritesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // TODO: Favorite
-                view.setSelected(!view.isSelected());
-                int color = view.isSelected() ? R.color.openfeed_text_primary_color : R.color.openfeed_text_secondary_color;
-                mFavoritesText.setTextColor(mContext.getResources().getColor(color));
-                mFavoriteIcon.setSelected(view.isSelected());
+                toggleFavoritesButton(view);
             }
         });
+        if (status.isFavorited()) {
+            toggleFavoritesButton(mFavoritesButton);
+        }
         linkifyStatusText();
         // Set after linkifying so rest of text is handled the same as the view
         mStatusText.setOnClickListener(this);
+    }
+
+    private void toggleRetweetsButton(View view) {
+        view.setSelected(!view.isSelected());
+        int color = view.isSelected() ? R.color.openfeed_text_primary_color : R.color.openfeed_text_secondary_color;
+        mRetweetsText.setTextColor(mContext.getResources().getColor(color));
+        mRetweetIcon.setSelected(view.isSelected());
+    }
+
+    private void toggleFavoritesButton(View view) {
+        view.setSelected(!view.isSelected());
+        int color = view.isSelected() ? R.color.openfeed_text_primary_color : R.color.openfeed_text_secondary_color;
+        mFavoritesText.setTextColor(mContext.getResources().getColor(color));
+        mFavoriteIcon.setSelected(view.isSelected());
     }
 
     public void setTag(Status tag) {
