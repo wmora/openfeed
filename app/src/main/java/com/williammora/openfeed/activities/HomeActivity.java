@@ -12,22 +12,40 @@ import com.williammora.openfeed.services.TwitterService;
 
 public class HomeActivity extends Activity implements HomeFeedFragment.HomeFeedFragmentListener {
 
+    private static final String SAVED_SHOWING_GO_TO_TOP = "SAVED_SHOWING_GO_TO_TOP";
+
+    private Menu mMenu;
+    private boolean mShowingGoToTop;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
-                    .add(R.id.container, new HomeFeedFragment())
+                    .add(R.id.container, new HomeFeedFragment(), HomeFeedFragment.TAG)
                     .commit();
         }
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putBoolean(SAVED_SHOWING_GO_TO_TOP, mShowingGoToTop);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        mShowingGoToTop = savedInstanceState.getBoolean(SAVED_SHOWING_GO_TO_TOP, false);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.home, menu);
+        mMenu = menu;
+        showGoToTopOption(mShowingGoToTop);
         return true;
     }
 
@@ -36,12 +54,20 @@ public class HomeActivity extends Activity implements HomeFeedFragment.HomeFeedF
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_sign_out) {
-            signOut();
-            return true;
+        switch (item.getItemId()) {
+            case R.id.action_sign_out:
+                signOut();
+                return true;
+            case R.id.action_go_to_top:
+                goToTop();
+                return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void goToTop() {
+        HomeFeedFragment fragment = (HomeFeedFragment) getFragmentManager().findFragmentByTag(HomeFeedFragment.TAG);
+        fragment.goToTop();
     }
 
     private void signOut() {
@@ -64,5 +90,11 @@ public class HomeActivity extends Activity implements HomeFeedFragment.HomeFeedF
     @Override
     public void onRefreshCompleted() {
         setTitle(R.string.title_activity_home);
+    }
+
+    @Override
+    public void showGoToTopOption(boolean shouldShow) {
+        mMenu.findItem(R.id.action_go_to_top).setVisible(shouldShow);
+        mShowingGoToTop = shouldShow;
     }
 }

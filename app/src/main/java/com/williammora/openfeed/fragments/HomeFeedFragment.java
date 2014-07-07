@@ -34,7 +34,7 @@ import twitter4j.conf.ConfigurationBuilder;
 public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener,
         RecyclerView.OnScrollListener, OnViewHolderClickListener<Status> {
 
-    private static String TAG = HomeFeedFragment.class.getSimpleName();
+    public static String TAG = HomeFeedFragment.class.getSimpleName();
 
     private static final String SAVED_USER_FEED = "SAVED_USER_FEED";
 
@@ -42,6 +42,8 @@ public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
         public void onRefreshRequested();
 
         public void onRefreshCompleted();
+
+        public void showGoToTopOption(boolean shouldShow);
     }
 
     private RecyclerView mFeed;
@@ -84,6 +86,7 @@ public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
 
     @Override
     public void onAttach(Activity activity) {
+        super.onAttach(activity);
         if (activity instanceof HomeFeedFragmentListener) {
             mListener = (HomeFeedFragmentListener) activity;
             ConfigurationBuilder builder = new ConfigurationBuilder();
@@ -94,7 +97,6 @@ public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
             mTwitter = factory.getInstance();
             mTwitter.setOAuthAccessToken(TwitterService.getInstance().getAccessToken(activity));
         }
-        super.onAttach(activity);
     }
 
     @Override
@@ -173,12 +175,28 @@ public class HomeFeedFragment extends Fragment implements SwipeRefreshLayout.OnR
     }
 
     public void onScrolled(int x, int y) {
+        mListener.showGoToTopOption(shouldShowGoToTopButton());
         if (mRequestingMore) {
             return;
         }
         if (feedBottomReached()) {
             requestPreviousStatuses();
         }
+    }
+
+    private boolean shouldShowGoToTopButton() {
+        if (mFeed.getChildCount() <= 0) {
+            return false;
+        }
+        View topChildView = mFeed.getChildAt(0);
+        Status currentTopStatus = (Status) topChildView.getTag();
+        int statusIndex = mUserFeed.getStatuses().indexOf(currentTopStatus);
+        return statusIndex >= 4;
+    }
+
+    public void goToTop() {
+        mFeed.scrollToPosition(0);
+        mListener.showGoToTopOption(false);
     }
 
     private void requestPreviousStatuses() {
