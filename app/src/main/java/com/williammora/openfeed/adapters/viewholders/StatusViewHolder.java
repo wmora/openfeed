@@ -23,6 +23,7 @@ import java.util.regex.Pattern;
 
 import twitter4j.MediaEntity;
 import twitter4j.Status;
+import twitter4j.URLEntity;
 
 public class StatusViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -152,7 +153,14 @@ public class StatusViewHolder extends RecyclerView.ViewHolder implements View.On
         if (status.isFavorited()) {
             toggleFavoritesButton(mFavoritesButton);
         }
-        linkifyStatusText();
+        for (URLEntity urlEntity : status.getURLEntities()) {
+            String url = urlEntity.getURL();
+            String displayUrl = urlEntity.getDisplayURL();
+            mStatusText.setText(mStatusText.getText().toString().replaceFirst(url, displayUrl));
+            linkifyStatusUrl(displayUrl, urlEntity.getExpandedURL());
+        }
+        linkifyUserMentions();
+        linkifyHashtags();
         // Set after linkifying so rest of text is handled the same as the view
         mStatusText.setOnClickListener(this);
     }
@@ -175,12 +183,18 @@ public class StatusViewHolder extends RecyclerView.ViewHolder implements View.On
         itemView.setTag(tag);
     }
 
-    public void linkifyStatusText() {
+    public void linkifyUserMentions() {
         Linkify.addLinks(mStatusText, MENTION_PATTERN, MENTION_SCHEME, null,
                 new PrefixTransformFilter("@"));
+    }
+
+    public void linkifyHashtags() {
         Linkify.addLinks(mStatusText, HASHTAG_PATTERN, HASHTAG_SCHEME, null,
                 new PrefixTransformFilter("#"));
-        Linkify.addLinks(mStatusText, URL_PATTERN, null);
+    }
+
+    private void linkifyStatusUrl(String displayUrl, String url) {
+        Linkify.addLinks(mStatusText, Pattern.compile(displayUrl), url, null, new UrlTransformFilter());
     }
 
     @Override
@@ -204,6 +218,14 @@ public class StatusViewHolder extends RecyclerView.ViewHolder implements View.On
             return matcher.group().replaceFirst(prefix, "");
         }
 
+    }
+
+    private class UrlTransformFilter implements Linkify.TransformFilter {
+
+        @Override
+        public String transformUrl(Matcher matcher, String s) {
+            return "";
+        }
     }
 
     private class StatusImageTransformation implements Transformation {
