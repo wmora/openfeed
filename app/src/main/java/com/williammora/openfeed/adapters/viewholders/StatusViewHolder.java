@@ -176,16 +176,12 @@ public class StatusViewHolder extends RecyclerView.ViewHolder implements View.On
     }
 
     public void linkifyStatusText() {
-        Linkify.addLinks(mStatusText, MENTION_PATTERN, MENTION_SCHEME, null, filter);
-        Linkify.addLinks(mStatusText, HASHTAG_PATTERN, HASHTAG_SCHEME, null, filter);
-        Linkify.addLinks(mStatusText, URL_PATTERN, null, null, filter);
+        Linkify.addLinks(mStatusText, MENTION_PATTERN, MENTION_SCHEME, null,
+                new PrefixTransformFilter("@"));
+        Linkify.addLinks(mStatusText, HASHTAG_PATTERN, HASHTAG_SCHEME, null,
+                new PrefixTransformFilter("#"));
+        Linkify.addLinks(mStatusText, URL_PATTERN, null);
     }
-
-    private final Linkify.TransformFilter filter = new Linkify.TransformFilter() {
-        public final String transformUrl(final Matcher match, String url) {
-            return match.group();
-        }
-    };
 
     @Override
     public void onClick(View view) {
@@ -193,6 +189,21 @@ public class StatusViewHolder extends RecyclerView.ViewHolder implements View.On
             Status status = (Status) itemView.getTag();
             mListener.onItemClick(itemView, status);
         }
+    }
+
+    private class PrefixTransformFilter implements Linkify.TransformFilter {
+
+        String prefix;
+
+        public PrefixTransformFilter(String prefix) {
+            this.prefix = prefix;
+        }
+
+        @Override
+        public String transformUrl(Matcher matcher, String s) {
+            return matcher.group().replaceFirst(prefix, "");
+        }
+
     }
 
     private class StatusImageTransformation implements Transformation {
