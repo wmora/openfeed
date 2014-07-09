@@ -157,7 +157,7 @@ public class StatusViewHolder extends RecyclerView.ViewHolder implements View.On
             String url = urlEntity.getURL();
             String displayUrl = urlEntity.getDisplayURL();
             mStatusText.setText(mStatusText.getText().toString().replaceFirst(url, displayUrl));
-            linkifyStatusUrl(displayUrl, urlEntity.getExpandedURL());
+            linkifyUrl(displayUrl, urlEntity.getURL());
         }
         linkifyUserMentions();
         linkifyHashtags();
@@ -193,8 +193,9 @@ public class StatusViewHolder extends RecyclerView.ViewHolder implements View.On
                 new PrefixTransformFilter("#"));
     }
 
-    private void linkifyStatusUrl(String displayUrl, String url) {
-        Linkify.addLinks(mStatusText, Pattern.compile(displayUrl), url, null, new UrlTransformFilter());
+    private void linkifyUrl(String displayUrl, String url) {
+        Linkify.addLinks(mStatusText, Pattern.compile(displayUrl), null, null,
+                new UrlTransformFilter(url));
     }
 
     @Override
@@ -222,9 +223,15 @@ public class StatusViewHolder extends RecyclerView.ViewHolder implements View.On
 
     private class UrlTransformFilter implements Linkify.TransformFilter {
 
+        String mUrl;
+
+        private UrlTransformFilter(String url) {
+            mUrl = url;
+        }
+
         @Override
         public String transformUrl(Matcher matcher, String s) {
-            return "";
+            return mUrl;
         }
     }
 
