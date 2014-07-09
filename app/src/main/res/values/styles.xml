@@ -57,4 +57,9 @@
         <item name="android:padding">8dp</item>
     </style>
 
+    <style name="OpenFeedTheme.StatusImage">
+        <item name="android:adjustViewBounds">true</item>
+        <item name="android:paddingTop">16dp</item>
+    </style>
+
 </resources>
