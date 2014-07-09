@@ -50,7 +50,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="users"
+                    android:host="@string/twitter_users_host"
                     android:scheme="openfeed-android" />
             </intent-filter>
 
@@ -60,7 +60,6 @@
         </activity>
         <activity
             android:name=".activities.SearchResultsActivity"
-            android:label="@string/title_activity_search_results"
             android:parentActivityName=".activities.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -69,7 +68,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="search"
+                    android:host="@string/twitter_hashtag_host"
                     android:scheme="openfeed-android" />
             </intent-filter>
             <meta-data

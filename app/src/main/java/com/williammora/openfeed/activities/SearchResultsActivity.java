@@ -1,13 +1,11 @@
 package com.williammora.openfeed.activities;
 
 import android.app.Activity;
-import android.app.Fragment;
+import android.net.Uri;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.williammora.openfeed.R;
+import com.williammora.openfeed.fragments.SearchResultsFragment;
 
 public class SearchResultsActivity extends Activity {
 
@@ -17,24 +15,27 @@ public class SearchResultsActivity extends Activity {
         setContentView(R.layout.activity_search_results);
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
+                    .add(R.id.container, new SearchResultsFragment())
                     .commit();
         }
     }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-
-        public PlaceholderFragment() {
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Uri uri = getIntent().getData();
+        if (uri != null) {
+            String query = uri.getLastPathSegment();
+            if (uri.getHost().equals(getString(R.string.twitter_hashtag_host))) {
+                query = "#" + query;
+            }
+            updateTitle(query);
         }
+    }
 
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_search_results, container, false);
-            return rootView;
+    private void updateTitle(String query) {
+        if (getActionBar() != null) {
+            getActionBar().setTitle(query);
         }
     }
 }

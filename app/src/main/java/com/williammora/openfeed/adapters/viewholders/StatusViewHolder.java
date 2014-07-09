@@ -27,10 +27,7 @@ import twitter4j.URLEntity;
 public class StatusViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     private static final Pattern MENTION_PATTERN = Pattern.compile("@([A-Za-z0-9_-]+)");
-    private static final String MENTION_SCHEME = "openfeed-android://users/";
-
     private static final Pattern HASHTAG_PATTERN = Pattern.compile("#([A-Za-z0-9_-]+)");
-    private static final String HASHTAG_SCHEME = "openfeed-android://search/";
 
     private Context mContext;
     private OnViewHolderClickListener<Status> mListener;
@@ -181,13 +178,13 @@ public class StatusViewHolder extends RecyclerView.ViewHolder implements View.On
     }
 
     public void linkifyUserMentions() {
-        Linkify.addLinks(mStatusText, MENTION_PATTERN, MENTION_SCHEME, null,
-                new PrefixTransformFilter("@"));
+        String mentionUri = mContext.getString(R.string.twitter_mention_uri);
+        Linkify.addLinks(mStatusText, MENTION_PATTERN, mentionUri, null, new TransformFilter("@"));
     }
 
     public void linkifyHashtags() {
-        Linkify.addLinks(mStatusText, HASHTAG_PATTERN, HASHTAG_SCHEME, null,
-                new PrefixTransformFilter("#"));
+        String hashtagUri = mContext.getString(R.string.twitter_hashtag_uri);
+        Linkify.addLinks(mStatusText, HASHTAG_PATTERN, hashtagUri, null, new TransformFilter("#"));
     }
 
     private void linkifyUrl(String displayUrl, String url) {
@@ -203,11 +200,11 @@ public class StatusViewHolder extends RecyclerView.ViewHolder implements View.On
         }
     }
 
-    private class PrefixTransformFilter implements Linkify.TransformFilter {
+    private class TransformFilter implements Linkify.TransformFilter {
 
         String prefix;
 
-        public PrefixTransformFilter(String prefix) {
+        public TransformFilter(String prefix) {
             this.prefix = prefix;
         }
 
