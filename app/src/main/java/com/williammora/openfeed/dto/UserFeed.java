@@ -8,6 +8,8 @@ import twitter4j.Status;
 
 public class UserFeed implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     List<Status> statuses;
     Paging paging;
 
