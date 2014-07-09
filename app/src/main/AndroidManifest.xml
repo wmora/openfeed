@@ -24,8 +24,8 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="openfeed-android"
-                    android:scheme="oauth" />
+                    android:host="oauth"
+                    android:scheme="openfeed-android" />
             </intent-filter>
         </activity>
         <activity
@@ -35,6 +35,43 @@
             android:name=".activities.StatusActivity"
             android:label="@string/title_activity_status"
             android:parentActivityName=".activities.HomeActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.williammora.openfeed.activities.HomeActivity" />
+        </activity>
+        <activity
+            android:name=".activities.UserActivity"
+            android:label="@string/title_activity_user"
+            android:parentActivityName=".activities.HomeActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="users"
+                    android:scheme="openfeed-android" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.williammora.openfeed.activities.HomeActivity" />
+        </activity>
+        <activity
+            android:name=".activities.SearchResultsActivity"
+            android:label="@string/title_activity_search_results"
+            android:parentActivityName=".activities.HomeActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="search"
+                    android:scheme="openfeed-android" />
+            </intent-filter>
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.williammora.openfeed.activities.HomeActivity" />

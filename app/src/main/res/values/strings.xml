@@ -27,4 +27,10 @@
     <!-- Status -->
     <string name="title_activity_status">Status</string>
 
+    <!-- User -->
+    <string name="title_activity_user">User</string>
+
+    <!-- SearchResults -->
+    <string name="title_activity_search_results">Search Results</string>
+
 </resources>

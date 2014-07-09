@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.text.util.Linkify;
-import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -28,12 +27,10 @@ import twitter4j.URLEntity;
 public class StatusViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     private static final Pattern MENTION_PATTERN = Pattern.compile("@([A-Za-z0-9_-]+)");
-    private static final String MENTION_SCHEME = "http://www.twitter.com/";
+    private static final String MENTION_SCHEME = "openfeed-android://users/";
 
     private static final Pattern HASHTAG_PATTERN = Pattern.compile("#([A-Za-z0-9_-]+)");
-    private static final String HASHTAG_SCHEME = "http://www.twitter.com/search/";
-
-    private static final Pattern URL_PATTERN = Patterns.WEB_URL;
+    private static final String HASHTAG_SCHEME = "openfeed-android://search/";
 
     private Context mContext;
     private OnViewHolderClickListener<Status> mListener;
