@@ -8,9 +8,10 @@ import android.view.MenuItem;
 
 import com.williammora.openfeed.R;
 import com.williammora.openfeed.fragments.HomeFeedFragment;
+import com.williammora.openfeed.listeners.FeedFragmentListener;
 import com.williammora.openfeed.services.TwitterService;
 
-public class HomeActivity extends Activity implements HomeFeedFragment.HomeFeedFragmentListener {
+public class HomeActivity extends Activity implements FeedFragmentListener {
 
     private static final String SAVED_SHOWING_GO_TO_TOP = "SAVED_SHOWING_GO_TO_TOP";
 

@@ -1,20 +1,26 @@
 package com.williammora.openfeed.fragments;
 
-import android.app.Fragment;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.os.AsyncTask;
 
-import com.williammora.openfeed.R;
+import com.williammora.openfeed.dto.Feed;
 
-public class SearchResultsFragment extends Fragment {
+import twitter4j.Paging;
+import twitter4j.Query;
+
+public class SearchResultsFragment extends AbstractFeedFragment {
+
+    public static final String TAG = SearchResultsFragment.class.getSimpleName();
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_search_results, container, false);
-        return rootView;
+    protected void doRequest(Paging paging) {
+
     }
 
+    private class SearchTask extends AsyncTask<Query, Void, Feed> {
+
+        @Override
+        protected Feed doInBackground(Query... queries) {
+            return null;
+        }
+    }
 }
