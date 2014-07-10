@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.williammora.openfeed.R;
+import com.williammora.openfeed.fragments.PopularSearchResultsFragment;
 import com.williammora.openfeed.fragments.SearchResultsFragment;
 
 public class SearchResultsActivity extends Activity implements
@@ -25,7 +26,7 @@ public class SearchResultsActivity extends Activity implements
         setContentView(R.layout.activity_search_results);
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
-                    .add(R.id.container, new SearchResultsFragment(), SearchResultsFragment.TAG)
+                    .add(R.id.container, new PopularSearchResultsFragment(), PopularSearchResultsFragment.TAG)
                     .commit();
             Uri uri = getIntent().getData();
             if (uri != null) {
@@ -94,8 +95,8 @@ public class SearchResultsActivity extends Activity implements
     }
 
     private void goToTop() {
-        SearchResultsFragment fragment = (SearchResultsFragment) getFragmentManager().
-                findFragmentByTag(SearchResultsFragment.TAG);
+        PopularSearchResultsFragment fragment = (PopularSearchResultsFragment) getFragmentManager().
+                findFragmentByTag(PopularSearchResultsFragment.TAG);
         fragment.goToTop();
     }
 }

@@ -12,9 +12,7 @@ import twitter4j.Query;
 import twitter4j.QueryResult;
 import twitter4j.TwitterException;
 
-public class SearchResultsFragment extends AbstractFeedFragment {
-
-    public static final String TAG = SearchResultsFragment.class.getSimpleName();
+public abstract class SearchResultsFragment extends AbstractFeedFragment {
 
     public interface SearchResultsFragmentListener extends FeedFragmentListener {
         public String getQuery();
@@ -38,8 +36,11 @@ public class SearchResultsFragment extends AbstractFeedFragment {
         query.setCount(paging.getCount());
         query.setMaxId(paging.getMaxId());
         query.setSinceId(paging.getSinceId());
+        query.setResultType(getResultType());
         new SearchTask().execute(query);
     }
+
+    protected abstract Query.ResultType getResultType();
 
     private class SearchTask extends AsyncTask<Query, Void, Feed> {
 
