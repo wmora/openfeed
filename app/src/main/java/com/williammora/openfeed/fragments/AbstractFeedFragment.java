@@ -116,7 +116,6 @@ public abstract class AbstractFeedFragment extends Fragment implements
         if (mRequestingMore) {
             return;
         }
-        mListener.onRefreshRequested();
         mRequestingMore = true;
         mFeedContainer.setEnabled(false);
         mFeedContainer.setRefreshing(true);
@@ -218,6 +217,12 @@ public abstract class AbstractFeedFragment extends Fragment implements
         }
 
         mFeed.setPaging(paging);
+    }
+
+    public void onRequestCompleted() {
+        mRequestingMore = false;
+        mFeedContainer.setRefreshing(false);
+        mFeedContainer.setEnabled(true);
     }
 
 }

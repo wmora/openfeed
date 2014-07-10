@@ -84,16 +84,6 @@ public class HomeActivity extends Activity implements FeedFragmentListener {
     }
 
     @Override
-    public void onRefreshRequested() {
-        setTitle(R.string.loading);
-    }
-
-    @Override
-    public void onRefreshCompleted() {
-        setTitle(R.string.title_activity_home);
-    }
-
-    @Override
     public void showGoToTopOption(boolean shouldShow) {
         mMenu.findItem(R.id.action_go_to_top).setVisible(shouldShow);
         mShowingGoToTop = shouldShow;

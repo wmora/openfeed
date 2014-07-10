@@ -4,12 +4,10 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.williammora.openfeed.dto.Feed;
-import com.williammora.openfeed.dto.UserFeed;
 
 import java.util.List;
 
 import twitter4j.Paging;
-import twitter4j.Status;
 import twitter4j.TwitterException;
 
 public class HomeFeedFragment extends AbstractFeedFragment {
@@ -19,13 +17,6 @@ public class HomeFeedFragment extends AbstractFeedFragment {
     @Override
     protected void doRequest(Paging paging) {
         new HomeFeedTask().execute(paging);
-    }
-
-    public void onRequestCompleted() {
-        mRequestingMore = false;
-        mFeedContainer.setRefreshing(false);
-        mListener.onRefreshCompleted();
-        mFeedContainer.setEnabled(true);
     }
 
     private class HomeFeedTask extends AsyncTask<Paging, Void, Feed> {
