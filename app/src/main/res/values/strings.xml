@@ -29,6 +29,8 @@
 
     <!-- User -->
     <string name="title_activity_user">User</string>
+    <string name="follow">Follow</string>
+    <string name="following">Following</string>
 
     <!-- SearchResults -->
 
