@@ -1,13 +1,21 @@
 package com.williammora.openfeed.activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.williammora.openfeed.R;
 import com.williammora.openfeed.fragments.UserFragment;
 
-public class UserActivity extends Activity {
+import twitter4j.User;
+
+public class UserActivity extends Activity implements UserFragment.UserFragmentListener {
+
+    public static final String EXTRA_USER = "EXTRA_USER";
+    public static final String SAVED_USER = "SAVED_USER";
+
+    private User mUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,7 +25,24 @@ public class UserActivity extends Activity {
             getFragmentManager().beginTransaction()
                     .add(R.id.container, new UserFragment())
                     .commit();
+            Intent intent = getIntent();
+            mUser = (User) intent.getSerializableExtra(EXTRA_USER);
+            if (mUser == null) {
+                // load user from Uri
+            }
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putSerializable(SAVED_USER, mUser);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        mUser = (User) savedInstanceState.getSerializable(SAVED_USER);
     }
 
     @Override
@@ -31,5 +56,10 @@ public class UserActivity extends Activity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public User getUser() {
+        return mUser;
     }
 }

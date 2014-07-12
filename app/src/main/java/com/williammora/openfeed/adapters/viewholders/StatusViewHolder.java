@@ -1,7 +1,6 @@
 package com.williammora.openfeed.adapters.viewholders;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.text.util.Linkify;
 import android.view.LayoutInflater;
@@ -11,9 +10,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Transformation;
 import com.williammora.openfeed.R;
+import com.williammora.openfeed.listeners.OnUserClickListener;
 import com.williammora.openfeed.listeners.OnViewHolderClickListener;
+import com.williammora.openfeed.picasso.StatusImageTransformation;
 import com.williammora.openfeed.utils.StatusUtils;
 import com.williammora.openfeed.utils.UserUtils;
 
@@ -81,6 +81,7 @@ public class StatusViewHolder extends RecyclerView.ViewHolder implements View.On
                     .getString(R.string.status_retweeted_by_prefix), status.getUser().getName());
             mRetweetedByText.setText(retweetedBy);
             mRetweetedByLayout.setVisibility(View.VISIBLE);
+            mRetweetedByLayout.setOnClickListener(new OnUserClickListener(status.getUser()));
             status = status.getRetweetedStatus();
         } else {
             mRetweetedByLayout.setVisibility(View.GONE);
@@ -111,8 +112,11 @@ public class StatusViewHolder extends RecyclerView.ViewHolder implements View.On
                 .load(status.getUser().getBiggerProfileImageURLHttps())
                 .error(R.drawable.ic_launcher)
                 .into(mStatusUserPic);
+        mStatusUserPic.setOnClickListener(new OnUserClickListener(status.getUser()));
         mStatusUserName.setText(status.getUser().getName());
         mStatusUserScreenName.setText(UserUtils.getFullScreenName(status.getUser()));
+        mStatusUserName.setOnClickListener(new OnUserClickListener(status.getUser()));
+        mStatusUserScreenName.setOnClickListener(new OnUserClickListener(status.getUser()));
         mStatusCreated.setText(StatusUtils.getCreatedText(status));
         mStatusText.setText(statusText);
         mRetweetsText.setText(String.format("%d", status.getRetweetCount()));
@@ -226,34 +230,6 @@ public class StatusViewHolder extends RecyclerView.ViewHolder implements View.On
         @Override
         public String transformUrl(Matcher matcher, String s) {
             return mUrl;
-        }
-    }
-
-    private class StatusImageTransformation implements Transformation {
-
-        private View mHolder;
-        private long id;
-
-        public StatusImageTransformation(View holder, long statusId) {
-            mHolder = holder;
-            id = statusId;
-        }
-
-        @Override
-        public Bitmap transform(Bitmap source) {
-            float aspectRatio = (float) source.getHeight() / (float) source.getWidth();
-            int width = mHolder.getWidth();
-            int height = (int) (width * aspectRatio);
-            Bitmap transformedBitmap = Bitmap.createScaledBitmap(source, width, height, false);
-            if (transformedBitmap != source) {
-                source.recycle();
-            }
-            return transformedBitmap;
-        }
-
-        @Override
-        public String key() {
-            return String.format("%s_%d_%d", getClass().getSimpleName(), id, mHolder.getId());
         }
     }
 
