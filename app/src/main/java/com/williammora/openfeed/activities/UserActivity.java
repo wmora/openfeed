@@ -62,4 +62,9 @@ public class UserActivity extends Activity implements UserFragment.UserFragmentL
     public User getUser() {
         return mUser;
     }
+
+    @Override
+    public void onUserLoaded(User user) {
+        setTitle(user.getName());
+    }
 }

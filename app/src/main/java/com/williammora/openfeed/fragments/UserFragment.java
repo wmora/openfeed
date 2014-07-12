@@ -22,6 +22,8 @@ public class UserFragment extends Fragment {
 
     public interface UserFragmentListener {
         public User getUser();
+
+        public void onUserLoaded(User user);
     }
 
     private UserFragmentListener mListener;
@@ -48,6 +50,7 @@ public class UserFragment extends Fragment {
         profileName.setText(mUser.getName());
         TextView profileScreenname = (TextView) rootView.findViewById(R.id.profile_screenname);
         profileScreenname.setText(UserUtils.getFullScreenName(mUser));
+        mListener.onUserLoaded(mUser);
         return rootView;
     }
 
