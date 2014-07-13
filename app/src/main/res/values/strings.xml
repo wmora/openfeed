@@ -28,7 +28,7 @@
     <string name="title_activity_status">Status</string>
 
     <!-- User -->
-    <string name="title_activity_user">User</string>
+    <string name="title_activity_user"></string>
     <string name="follow">Follow</string>
     <string name="following">Following</string>
 

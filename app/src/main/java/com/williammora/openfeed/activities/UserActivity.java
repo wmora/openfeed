@@ -2,6 +2,7 @@ package com.williammora.openfeed.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -14,8 +15,10 @@ public class UserActivity extends Activity implements UserFragment.UserFragmentL
 
     public static final String EXTRA_USER = "EXTRA_USER";
     public static final String SAVED_USER = "SAVED_USER";
+    public static final String SAVED_SCREEN_NAME = "SAVED_SCREEN_NAME";
 
     private User mUser;
+    private String mScreenName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +31,10 @@ public class UserActivity extends Activity implements UserFragment.UserFragmentL
             Intent intent = getIntent();
             mUser = (User) intent.getSerializableExtra(EXTRA_USER);
             if (mUser == null) {
-                // load user from Uri
+                Uri uri = getIntent().getData();
+                if (uri.getHost().equals(getString(R.string.twitter_users_host))) {
+                    mScreenName = uri.getLastPathSegment();
+                }
             }
         }
     }
@@ -36,6 +42,7 @@ public class UserActivity extends Activity implements UserFragment.UserFragmentL
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putSerializable(SAVED_USER, mUser);
+        outState.putString(SAVED_SCREEN_NAME, mScreenName);
         super.onSaveInstanceState(outState);
     }
 
@@ -43,6 +50,7 @@ public class UserActivity extends Activity implements UserFragment.UserFragmentL
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         mUser = (User) savedInstanceState.getSerializable(SAVED_USER);
+        mScreenName = savedInstanceState.getString(SAVED_SCREEN_NAME, "");
     }
 
     @Override
@@ -64,7 +72,13 @@ public class UserActivity extends Activity implements UserFragment.UserFragmentL
     }
 
     @Override
+    public String getUserScreenName() {
+        return mScreenName;
+    }
+
+    @Override
     public void onUserLoaded(User user) {
         setTitle(user.getName());
+        mUser = user;
     }
 }
