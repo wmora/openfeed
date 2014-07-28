@@ -10,7 +10,8 @@
         style="@style/OpenFeedTheme.Status"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/status_text_placeholder" />
+        android:text="@string/status_text_placeholder"
+        android:textIsSelectable="true" />
 
     <LinearLayout
         android:id="@+id/status_image_holder"
