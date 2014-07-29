@@ -175,7 +175,7 @@ public class FloatingActionButton extends View {
          * @param size
          * @return
          */
-        public Builder withButtonSize(int size) {
+        public Builder withSize(int size) {
             size = (int) (size * scale + 0.5f);
             params = new FrameLayout.LayoutParams(size, size);
             return this;
