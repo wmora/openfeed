@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AbsListView;
 
 import com.williammora.openfeed.R;
 import com.williammora.openfeed.fragments.HomeFeedFragment;
@@ -102,5 +103,14 @@ public class HomeActivity extends Activity implements FeedFragmentListener {
     public void showGoToTopOption(boolean shouldShow) {
         mMenu.findItem(R.id.action_go_to_top).setVisible(shouldShow);
         mShowingGoToTop = shouldShow;
+    }
+
+    @Override
+    public void onScrollStateChanged(int i) {
+        if (i == AbsListView.OnScrollListener.SCROLL_STATE_IDLE && mFab.isHidden()) {
+            mFab.show();
+        } else {
+            mFab.hide();
+        }
     }
 }

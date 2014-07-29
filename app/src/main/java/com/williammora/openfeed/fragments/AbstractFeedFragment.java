@@ -135,6 +135,7 @@ public abstract class AbstractFeedFragment extends Fragment implements
     }
 
     public void onScrollStateChanged(int i) {
+        mListener.onScrollStateChanged(i);
     }
 
     public void onScrolled(int x, int y) {
