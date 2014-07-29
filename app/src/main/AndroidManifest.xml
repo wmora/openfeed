@@ -75,6 +75,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.williammora.openfeed.activities.HomeActivity" />
         </activity>
+        <activity
+            android:name=".activities.ComposeStatusActivity"
+            android:label="@string/title_activity_compose_status"
+            android:parentActivityName=".activities.HomeActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.williammora.openfeed.activities.HomeActivity" />
+        </activity>
     </application>
 
 </manifest>
