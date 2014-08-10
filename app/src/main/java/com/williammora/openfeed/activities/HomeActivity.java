@@ -5,14 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.AbsListView;
 
 import com.williammora.openfeed.R;
 import com.williammora.openfeed.fragments.HomeFeedFragment;
 import com.williammora.openfeed.listeners.FeedFragmentListener;
-import com.williammora.openfeed.listeners.OnComposeStatusButtonClickListener;
 import com.williammora.openfeed.services.TwitterService;
-import com.williammora.openfeed.widgets.FloatingActionButton;
 
 public class HomeActivity extends Activity implements FeedFragmentListener {
 
@@ -20,7 +17,6 @@ public class HomeActivity extends Activity implements FeedFragmentListener {
 
     private Menu mMenu;
     private boolean mShowingGoToTop;
-    private FloatingActionButton mFab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,18 +27,6 @@ public class HomeActivity extends Activity implements FeedFragmentListener {
                     .add(R.id.container, new HomeFeedFragment(), HomeFeedFragment.TAG)
                     .commit();
         }
-        initFab();
-    }
-
-    private void initFab() {
-        mFab = new FloatingActionButton.Builder(this)
-                .withColor(getResources().getColor(R.color.openfeed_deep_orange_a400))
-                .withDrawable(getResources().getDrawable(R.drawable.compose_primary_color_small))
-                .withSize(72)
-                .withMargins(0, 0, 16, 16)
-                .create();
-        mFab.setClickable(true);
-        mFab.setOnClickListener(new OnComposeStatusButtonClickListener());
     }
 
     @Override
@@ -103,14 +87,5 @@ public class HomeActivity extends Activity implements FeedFragmentListener {
     public void showGoToTopOption(boolean shouldShow) {
         mMenu.findItem(R.id.action_go_to_top).setVisible(shouldShow);
         mShowingGoToTop = shouldShow;
-    }
-
-    @Override
-    public void onScrollStateChanged(int i) {
-        if (i == AbsListView.OnScrollListener.SCROLL_STATE_IDLE && mFab.isHidden()) {
-            mFab.show();
-        } else {
-            mFab.hide();
-        }
     }
 }

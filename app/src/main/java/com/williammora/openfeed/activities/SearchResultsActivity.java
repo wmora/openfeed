@@ -90,11 +90,6 @@ public class SearchResultsActivity extends Activity implements
     }
 
     @Override
-    public void onScrollStateChanged(int i) {
-        // Nothing to do here
-    }
-
-    @Override
     public String getQuery() {
         return mQuery;
     }
