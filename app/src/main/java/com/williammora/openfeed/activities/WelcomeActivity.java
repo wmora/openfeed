@@ -57,8 +57,8 @@ public class WelcomeActivity extends Activity implements WelcomeFragment.Welcome
     private void setUpTwitterService() {
         mTwitter = new AsyncTwitterFactory().getInstance();
         mTwitter.addListener(new WelcomeTwitterListener());
-        mTwitter.setOAuthConsumer(getString(R.string.twitter_oauth_key),
-                getString(R.string.twitter_oauth_secret));
+        mTwitter.setOAuthConsumer(TwitterService.getInstance().getTwitterOauthKey(),
+                TwitterService.getInstance().getTwitterOauthSecret());
     }
 
     private void handleTwitterCallback(Uri uri) {

@@ -1,5 +1,9 @@
 apply plugin: 'com.android.application'
 
+def loadString(name) {
+    hasProperty(name) ? "\"${getProperty(name)}\"" : ""
+}
+
 android {
     compileSdkVersion 'android-L'
     buildToolsVersion "20.0.0"
@@ -10,6 +14,9 @@ android {
         targetSdkVersion 'L'
         versionCode 1
         versionName "0.0.1"
+
+        buildConfigField "String", "TWITTER_OAUTH_KEY", "${loadString("TWITTER_OAUTH_KEY")}"
+        buildConfigField "String", "TWITTER_OAUTH_SECRET", "${loadString("TWITTER_OAUTH_SECRET")}"
     }
     buildTypes {
         release {

@@ -126,8 +126,8 @@ public abstract class AbstractFeedFragment extends Fragment implements
 
     private void setUpTwitterService(Context context) {
         ConfigurationBuilder builder = new ConfigurationBuilder();
-        builder.setOAuthConsumerKey(getString(R.string.twitter_oauth_key));
-        builder.setOAuthConsumerSecret(getString(R.string.twitter_oauth_secret));
+        builder.setOAuthConsumerKey(TwitterService.getInstance().getTwitterOauthKey());
+        builder.setOAuthConsumerSecret(TwitterService.getInstance().getTwitterOauthSecret());
         Configuration configuration = builder.build();
         TwitterFactory factory = new TwitterFactory(configuration);
         mTwitter = factory.getInstance();

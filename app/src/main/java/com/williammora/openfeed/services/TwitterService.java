@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 
+import com.williammora.openfeed.BuildConfig;
 import com.williammora.openfeed.utils.Preferences;
 
 import twitter4j.auth.AccessToken;
@@ -56,5 +57,13 @@ public class TwitterService {
         String tokenKey = getSharedPreferences(context).getString(Preferences.TWITTER_ACCESS_TOKEN_KEY, "");
         String tokenSecret = getSharedPreferences(context).getString(Preferences.TWITTER_ACCESS_TOKEN_SECRET, "");
         return new AccessToken(tokenKey, tokenSecret);
+    }
+
+    public String getTwitterOauthKey() {
+        return BuildConfig.TWITTER_OAUTH_KEY;
+    }
+
+    public String getTwitterOauthSecret() {
+        return BuildConfig.TWITTER_OAUTH_SECRET;
     }
 }

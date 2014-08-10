@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="twitter_callback_url">openfeed-android://oauth</string>
+    <string name="twitter_mention_uri">openfeed-android://users/</string>
+    <string name="twitter_users_host">users</string>
+    <string name="twitter_hashtag_uri">openfeed-android://hashtag/</string>
+    <string name="twitter_hashtag_host">hashtag</string>
+</resources>
