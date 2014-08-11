@@ -2,7 +2,6 @@ package com.williammora.openfeed.fragments;
 
 import android.app.Activity;
 
-import com.squareup.otto.Subscribe;
 import com.williammora.openfeed.dto.Feed;
 import com.williammora.openfeed.events.TwitterEvents;
 import com.williammora.openfeed.listeners.FeedFragmentListener;
