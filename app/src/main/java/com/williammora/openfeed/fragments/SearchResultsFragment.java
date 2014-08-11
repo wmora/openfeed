@@ -39,7 +39,6 @@ public abstract class SearchResultsFragment extends AbstractFeedFragment {
         TwitterService.getInstance().search(query);
     }
 
-    @Subscribe
     public void onSearchEvent(TwitterEvents.SearchEvent event) {
         Feed feed = new Feed();
         feed.setPaging(mPaging);
