@@ -1,16 +1,15 @@
 package com.williammora.openfeed.fragments;
 
 import android.app.Activity;
-import android.os.AsyncTask;
-import android.util.Log;
 
+import com.squareup.otto.Subscribe;
 import com.williammora.openfeed.dto.Feed;
+import com.williammora.openfeed.events.TwitterEvents;
 import com.williammora.openfeed.listeners.FeedFragmentListener;
+import com.williammora.openfeed.services.TwitterService;
 
 import twitter4j.Paging;
 import twitter4j.Query;
-import twitter4j.QueryResult;
-import twitter4j.TwitterException;
 
 public abstract class SearchResultsFragment extends AbstractFeedFragment {
 
@@ -37,51 +36,18 @@ public abstract class SearchResultsFragment extends AbstractFeedFragment {
         query.setMaxId(paging.getMaxId());
         query.setSinceId(paging.getSinceId());
         query.setResultType(getResultType());
-        new SearchTask().execute(query);
+        TwitterService.getInstance().search(query);
+    }
+
+    @Subscribe
+    public void onSearchEvent(TwitterEvents.SearchEvent event) {
+        Feed feed = new Feed();
+        feed.setPaging(mPaging);
+        feed.setStatuses(event.getResult().getTweets());
+        updateFeed(feed);
+        onRequestCompleted();
     }
 
     protected abstract Query.ResultType getResultType();
 
-    private class SearchTask extends AsyncTask<Query, Void, Feed> {
-
-        @Override
-        protected Feed doInBackground(Query... queries) {
-            try {
-                Query query = queries[0];
-                QueryResult queryResult = mTwitter.search(queries[0]);
-
-                Paging paging = new Paging();
-                paging.setCount(query.getCount());
-                if (query.getMaxId() > 0) {
-                    paging.setMaxId(query.getMaxId());
-                }
-                if (query.getSinceId() > 1) {
-                    paging.setSinceId(query.getSinceId());
-                }
-
-                Feed feed = new Feed();
-                feed.setPaging(paging);
-                feed.setStatuses(queryResult.getTweets());
-                return feed;
-            } catch (TwitterException e) {
-                Log.e(TAG, e.getMessage(), e);
-                return null;
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            super.onCancelled();
-            onRequestCompleted();
-        }
-
-        @Override
-        protected void onPostExecute(Feed feed) {
-            super.onPostExecute(feed);
-            if (feed != null) {
-                updateFeed(feed);
-            }
-            onRequestCompleted();
-        }
-    }
 }

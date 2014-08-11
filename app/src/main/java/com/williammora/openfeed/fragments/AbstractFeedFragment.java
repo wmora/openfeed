@@ -2,7 +2,6 @@ package com.williammora.openfeed.fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -19,6 +18,7 @@ import com.williammora.openfeed.dto.Feed;
 import com.williammora.openfeed.listeners.FeedFragmentListener;
 import com.williammora.openfeed.listeners.OnViewHolderClickListener;
 import com.williammora.openfeed.services.TwitterService;
+import com.williammora.openfeed.utils.BusProvider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,6 +90,7 @@ public abstract class AbstractFeedFragment extends Fragment implements
     @Override
     public void onResume() {
         super.onResume();
+        BusProvider.getInstance().register(this);
         if (mFeed.getStatuses().isEmpty()) {
             mFeedContainer.setRefreshing(true);
             onRefresh();
@@ -100,6 +101,12 @@ public abstract class AbstractFeedFragment extends Fragment implements
     public void onSaveInstanceState(Bundle outState) {
         outState.putSerializable(SAVED_FEED, mFeed);
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        BusProvider.getInstance().unregister(this);
     }
 
     @Override
@@ -194,7 +201,6 @@ public abstract class AbstractFeedFragment extends Fragment implements
     protected void updateFeed(Feed feed) {
 
         List<Status> statuses = feed.getStatuses();
-        Paging paging = feed.getPaging();
 
         if (statuses == null || statuses.isEmpty()) {
             return;
@@ -205,7 +211,7 @@ public abstract class AbstractFeedFragment extends Fragment implements
             statuses.addAll(mFeed.getStatuses());
             mFeed.setStatuses(statuses);
             mAdapter.setDataset(mFeed.getStatuses());
-        } else if (paging.getMaxId() > 1) {
+        } else if (mPaging.getMaxId() > 1) {
             // Previous statuses were requested
             statuses.remove(0);
             mFeed.getStatuses().addAll(statuses);
@@ -217,7 +223,7 @@ public abstract class AbstractFeedFragment extends Fragment implements
             mFeedView.smoothScrollToPosition(0);
         }
 
-        mFeed.setPaging(paging);
+        mFeed.setPaging(mPaging);
     }
 
     public void onRequestCompleted() {

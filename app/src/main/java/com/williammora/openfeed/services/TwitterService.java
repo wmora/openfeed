@@ -14,6 +14,11 @@ import com.williammora.openfeed.utils.Preferences;
 
 import twitter4j.AsyncTwitter;
 import twitter4j.AsyncTwitterFactory;
+import twitter4j.Paging;
+import twitter4j.Query;
+import twitter4j.QueryResult;
+import twitter4j.ResponseList;
+import twitter4j.Status;
 import twitter4j.TwitterAdapter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterMethod;
@@ -29,7 +34,6 @@ public class TwitterService {
     private Context context;
     private AsyncTwitter twitter;
 
-
     public static TwitterService getInstance() {
         return ourInstance;
     }
@@ -42,6 +46,9 @@ public class TwitterService {
         twitter = new AsyncTwitterFactory().getInstance();
         twitter.addListener(new TwitterListener());
         twitter.setOAuthConsumer(getTwitterOauthKey(), getTwitterOauthSecret());
+        if (isSignedIn()) {
+            twitter.setOAuthAccessToken(getAccessToken());
+        }
     }
 
     private SharedPreferences getSharedPreferences() {
@@ -99,6 +106,14 @@ public class TwitterService {
         twitter.getOAuthAccessTokenAsync(TwitterService.getInstance().getRequestToken(), verifier);
     }
 
+    public void getHomeTimeline(Paging paging) {
+        twitter.getHomeTimeline(paging);
+    }
+
+    public void search(Query query) {
+        twitter.search(query);
+    }
+
     private class TwitterListener extends TwitterAdapter {
 
         @Override
@@ -110,7 +125,18 @@ public class TwitterService {
         @Override
         public void gotOAuthAccessToken(AccessToken token) {
             TwitterService.getInstance().saveAccessToken(token);
+            twitter.setOAuthAccessToken(getAccessToken());
             BusProvider.getInstance().post(new TwitterEvents.OAuthAccessTokenEvent(token), true);
+        }
+
+        @Override
+        public void gotHomeTimeline(ResponseList<Status> statuses) {
+            BusProvider.getInstance().post(new TwitterEvents.HomeTimelineEvent(statuses), true);
+        }
+
+        @Override
+        public void searched(QueryResult queryResult) {
+            BusProvider.getInstance().post(new TwitterEvents.SearchEvent(queryResult), true);
         }
 
         @Override

@@ -1,14 +1,11 @@
 package com.williammora.openfeed.fragments;
 
-import android.os.AsyncTask;
-import android.util.Log;
-
+import com.squareup.otto.Subscribe;
 import com.williammora.openfeed.dto.Feed;
-
-import java.util.List;
+import com.williammora.openfeed.events.TwitterEvents;
+import com.williammora.openfeed.services.TwitterService;
 
 import twitter4j.Paging;
-import twitter4j.TwitterException;
 
 public class HomeFeedFragment extends AbstractFeedFragment {
 
@@ -16,38 +13,15 @@ public class HomeFeedFragment extends AbstractFeedFragment {
 
     @Override
     protected void doRequest(Paging paging) {
-        new HomeFeedTask().execute(paging);
+        TwitterService.getInstance().getHomeTimeline(paging);
     }
 
-    private class HomeFeedTask extends AsyncTask<Paging, Void, Feed> {
-
-        @Override
-        protected Feed doInBackground(Paging... pagings) {
-            try {
-                List<twitter4j.Status> statuses = mTwitter.getHomeTimeline(pagings[0]);
-                Feed feed = new Feed();
-                feed.setPaging(pagings[0]);
-                feed.setStatuses(statuses);
-                return feed;
-            } catch (TwitterException e) {
-                Log.e(TAG, e.getMessage(), e);
-                return null;
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            super.onCancelled();
-            onRequestCompleted();
-        }
-
-        @Override
-        protected void onPostExecute(Feed feed) {
-            super.onPostExecute(feed);
-            if (feed != null) {
-                updateFeed(feed);
-            }
-            onRequestCompleted();
-        }
+    @Subscribe
+    public void onHomeTimelineEvent(TwitterEvents.HomeTimelineEvent event) {
+        Feed feed = new Feed();
+        feed.setPaging(mPaging);
+        feed.setStatuses(event.getResult());
+        updateFeed(feed);
+        onRequestCompleted();
     }
 }
