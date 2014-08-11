@@ -4,31 +4,21 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 
+import com.squareup.otto.Subscribe;
 import com.williammora.openfeed.R;
+import com.williammora.openfeed.events.TwitterEvents;
 import com.williammora.openfeed.fragments.WelcomeFragment;
 import com.williammora.openfeed.services.TwitterService;
+import com.williammora.openfeed.utils.BusProvider;
 
-import twitter4j.AsyncTwitter;
-import twitter4j.AsyncTwitterFactory;
-import twitter4j.TwitterAdapter;
-import twitter4j.TwitterException;
-import twitter4j.TwitterMethod;
-import twitter4j.auth.AccessToken;
-import twitter4j.auth.RequestToken;
-
-public class WelcomeActivity extends Activity implements WelcomeFragment.WelcomeInterface {
-
-    private static final String TAG = WelcomeActivity.class.getSimpleName();
-
-    private AsyncTwitter mTwitter;
+public class WelcomeActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (TwitterService.getInstance().isSignedIn(getApplicationContext())) {
+        if (TwitterService.getInstance().isSignedIn()) {
             goToHome();
         }
 
@@ -45,7 +35,7 @@ public class WelcomeActivity extends Activity implements WelcomeFragment.Welcome
     @Override
     protected void onResume() {
         super.onResume();
-        setUpTwitterService();
+        BusProvider.getInstance().register(this);
 
         // Check if we are coming back form authorizing Twitter
         Uri uri = getIntent().getData();
@@ -54,21 +44,15 @@ public class WelcomeActivity extends Activity implements WelcomeFragment.Welcome
         }
     }
 
-    private void setUpTwitterService() {
-        mTwitter = new AsyncTwitterFactory().getInstance();
-        mTwitter.addListener(new WelcomeTwitterListener());
-        mTwitter.setOAuthConsumer(TwitterService.getInstance().getTwitterOauthKey(),
-                TwitterService.getInstance().getTwitterOauthSecret());
+    @Override
+    protected void onPause() {
+        super.onPause();
+        BusProvider.getInstance().unregister(this);
     }
 
     private void handleTwitterCallback(Uri uri) {
         String verifier = uri.getQueryParameter("oauth_verifier");
-        mTwitter.getOAuthAccessTokenAsync(TwitterService.getInstance().getRequestToken(), verifier);
-    }
-
-    @Override
-    public void onTwitterSignIn() {
-        mTwitter.getOAuthRequestTokenAsync(getString(R.string.twitter_callback_url));
+        TwitterService.getInstance().getOAuthAccessToken(verifier);
     }
 
     private void goToHome() {
@@ -78,25 +62,15 @@ public class WelcomeActivity extends Activity implements WelcomeFragment.Welcome
         finish();
     }
 
-    private class WelcomeTwitterListener extends TwitterAdapter {
-        @Override
-        public void gotOAuthRequestToken(RequestToken token) {
-            TwitterService.getInstance().setRequestToken(token);
-            Uri uri = Uri.parse(token.getAuthenticationURL());
-            startActivityForResult(new Intent(Intent.ACTION_VIEW, uri), 24);
-        }
+    @Subscribe
+    public void onOAuthRequestTokenEvent(TwitterEvents.OAuthRequestTokenEvent event) {
+        Uri uri = Uri.parse(event.getResult().getAuthenticationURL());
+        startActivityForResult(new Intent(Intent.ACTION_VIEW, uri), 24);
+    }
 
-        @Override
-        public void gotOAuthAccessToken(AccessToken token) {
-            Log.d(TAG, token.toString());
-            TwitterService.getInstance().saveAccessToken(getApplicationContext(), token);
-            goToHome();
-        }
-
-        @Override
-        public void onException(TwitterException te, TwitterMethod method) {
-            Log.e(TAG, method.toString(), te);
-        }
+    @Subscribe
+    public void onOAuthAccessTokenEvent(TwitterEvents.OAuthAccessTokenEvent event) {
+        goToHome();
     }
 
 }

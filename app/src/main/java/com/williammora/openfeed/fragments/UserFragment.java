@@ -87,18 +87,18 @@ public class UserFragment extends Fragment {
             if (mUser == null) {
                 mUser = mListener.getUser();
             }
-            setUpTwitterService(activity);
+            setUpTwitterService();
         }
     }
 
-    private void setUpTwitterService(Context context) {
+    private void setUpTwitterService() {
         ConfigurationBuilder builder = new ConfigurationBuilder();
         builder.setOAuthConsumerKey(TwitterService.getInstance().getTwitterOauthKey());
         builder.setOAuthConsumerSecret(TwitterService.getInstance().getTwitterOauthSecret());
         Configuration configuration = builder.build();
         TwitterFactory factory = new TwitterFactory(configuration);
         mTwitter = factory.getInstance();
-        mTwitter.setOAuthAccessToken(TwitterService.getInstance().getAccessToken(context));
+        mTwitter.setOAuthAccessToken(TwitterService.getInstance().getAccessToken());
     }
 
     @Override

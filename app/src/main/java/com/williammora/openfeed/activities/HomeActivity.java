@@ -72,7 +72,7 @@ public class HomeActivity extends Activity implements FeedFragmentListener {
     }
 
     private void signOut() {
-        TwitterService.getInstance().signOut(getApplicationContext());
+        TwitterService.getInstance().signOut();
         goToWelcome();
     }
 

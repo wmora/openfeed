@@ -84,7 +84,7 @@ public abstract class AbstractFeedFragment extends Fragment implements
             throw new ClassCastException("Activity must implement FeedFragmentListener");
         }
         mListener = (FeedFragmentListener) activity;
-        setUpTwitterService(activity);
+        setUpTwitterService();
     }
 
     @Override
@@ -124,14 +124,14 @@ public abstract class AbstractFeedFragment extends Fragment implements
 
     protected abstract void doRequest(Paging paging);
 
-    private void setUpTwitterService(Context context) {
+    private void setUpTwitterService() {
         ConfigurationBuilder builder = new ConfigurationBuilder();
         builder.setOAuthConsumerKey(TwitterService.getInstance().getTwitterOauthKey());
         builder.setOAuthConsumerSecret(TwitterService.getInstance().getTwitterOauthSecret());
         Configuration configuration = builder.build();
         TwitterFactory factory = new TwitterFactory(configuration);
         mTwitter = factory.getInstance();
-        mTwitter.setOAuthAccessToken(TwitterService.getInstance().getAccessToken(context));
+        mTwitter.setOAuthAccessToken(TwitterService.getInstance().getAccessToken());
     }
 
     public void onScrollStateChanged(int i) {
