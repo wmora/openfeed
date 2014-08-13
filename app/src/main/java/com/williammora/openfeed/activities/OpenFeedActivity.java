@@ -4,7 +4,7 @@ import android.app.Activity;
 
 import com.williammora.openfeed.utils.BusProvider;
 
-public class OpenFeedActivity extends Activity {
+public abstract class OpenFeedActivity extends Activity {
 
     @Override
     protected void onResume() {

@@ -4,7 +4,7 @@ import android.app.Fragment;
 
 import com.williammora.openfeed.utils.BusProvider;
 
-public class OpenFeedFragment extends Fragment {
+public abstract class OpenFeedFragment extends Fragment {
 
     @Override
     public void onResume() {
