@@ -16,17 +16,12 @@ import com.williammora.openfeed.adapters.FeedAdapter;
 import com.williammora.openfeed.dto.Feed;
 import com.williammora.openfeed.listeners.FeedFragmentListener;
 import com.williammora.openfeed.listeners.OnViewHolderClickListener;
-import com.williammora.openfeed.services.TwitterService;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import twitter4j.Paging;
 import twitter4j.Status;
-import twitter4j.Twitter;
-import twitter4j.TwitterFactory;
-import twitter4j.conf.Configuration;
-import twitter4j.conf.ConfigurationBuilder;
 
 public abstract class AbstractFeedFragment extends OpenFeedFragment implements
         SwipeRefreshLayout.OnRefreshListener, RecyclerView.OnScrollListener,
@@ -39,7 +34,6 @@ public abstract class AbstractFeedFragment extends OpenFeedFragment implements
     protected RecyclerView mFeedView;
     protected FeedAdapter mAdapter;
     protected SwipeRefreshLayout mFeedContainer;
-    protected Twitter mTwitter;
     protected Feed mFeed;
     protected Paging mPaging;
     protected boolean mRequestingMore;
@@ -82,7 +76,6 @@ public abstract class AbstractFeedFragment extends OpenFeedFragment implements
             throw new ClassCastException("Activity must implement FeedFragmentListener");
         }
         mListener = (FeedFragmentListener) activity;
-        setUpTwitterService();
     }
 
     @Override
@@ -121,16 +114,6 @@ public abstract class AbstractFeedFragment extends OpenFeedFragment implements
     }
 
     protected abstract void doRequest(Paging paging);
-
-    private void setUpTwitterService() {
-        ConfigurationBuilder builder = new ConfigurationBuilder();
-        builder.setOAuthConsumerKey(TwitterService.getInstance().getTwitterOauthKey());
-        builder.setOAuthConsumerSecret(TwitterService.getInstance().getTwitterOauthSecret());
-        Configuration configuration = builder.build();
-        TwitterFactory factory = new TwitterFactory(configuration);
-        mTwitter = factory.getInstance();
-        mTwitter.setOAuthAccessToken(TwitterService.getInstance().getAccessToken());
-    }
 
     public void onScrollStateChanged(int i) {
         // Nothing to do here
