@@ -1,7 +1,6 @@
 package com.williammora.openfeed.fragments;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -18,7 +17,6 @@ import com.williammora.openfeed.dto.Feed;
 import com.williammora.openfeed.listeners.FeedFragmentListener;
 import com.williammora.openfeed.listeners.OnViewHolderClickListener;
 import com.williammora.openfeed.services.TwitterService;
-import com.williammora.openfeed.utils.BusProvider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +28,7 @@ import twitter4j.TwitterFactory;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
 
-public abstract class AbstractFeedFragment extends Fragment implements
+public abstract class AbstractFeedFragment extends OpenFeedFragment implements
         SwipeRefreshLayout.OnRefreshListener, RecyclerView.OnScrollListener,
         OnViewHolderClickListener<Status> {
 
@@ -90,7 +88,6 @@ public abstract class AbstractFeedFragment extends Fragment implements
     @Override
     public void onResume() {
         super.onResume();
-        BusProvider.getInstance().register(this);
         if (mFeed.getStatuses().isEmpty()) {
             mFeedContainer.setRefreshing(true);
             onRefresh();
@@ -101,12 +98,6 @@ public abstract class AbstractFeedFragment extends Fragment implements
     public void onSaveInstanceState(Bundle outState) {
         outState.putSerializable(SAVED_FEED, mFeed);
         super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        BusProvider.getInstance().unregister(this);
     }
 
     @Override
