@@ -1,17 +1,18 @@
 package com.williammora.openfeed.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.squareup.otto.Subscribe;
 import com.williammora.openfeed.R;
+import com.williammora.openfeed.events.TwitterEvents;
 import com.williammora.openfeed.fragments.UserFragment;
 
 import twitter4j.User;
 
-public class UserActivity extends Activity implements UserFragment.UserFragmentListener {
+public class UserActivity extends OpenFeedActivity implements UserFragment.UserFragmentListener {
 
     public static final String EXTRA_USER = "EXTRA_USER";
     public static final String SAVED_USER = "SAVED_USER";
@@ -76,8 +77,9 @@ public class UserActivity extends Activity implements UserFragment.UserFragmentL
         return mScreenName;
     }
 
-    @Override
-    public void onUserLoaded(User user) {
+    @Subscribe
+    public void onUserEvent(TwitterEvents.UserEvent event) {
+        User user = event.getResult();
         setTitle(user.getName());
         mUser = user;
     }

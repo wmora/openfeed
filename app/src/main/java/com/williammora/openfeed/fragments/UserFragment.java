@@ -1,9 +1,6 @@
 package com.williammora.openfeed.fragments;
 
 import android.app.Activity;
-import android.app.Fragment;
-import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,20 +8,17 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
 import com.williammora.openfeed.R;
+import com.williammora.openfeed.events.TwitterEvents;
 import com.williammora.openfeed.picasso.ProfileBannerTransformation;
 import com.williammora.openfeed.services.TwitterService;
 import com.williammora.openfeed.utils.UserUtils;
 
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
 import twitter4j.User;
-import twitter4j.conf.Configuration;
-import twitter4j.conf.ConfigurationBuilder;
 
-public class UserFragment extends Fragment {
+public class UserFragment extends OpenFeedFragment {
 
     public static final String SAVED_USER = "SAVED_USER";
 
@@ -32,14 +26,11 @@ public class UserFragment extends Fragment {
         public User getUser();
 
         public String getUserScreenName();
-
-        public void onUserLoaded(User user);
     }
 
     private UserFragmentListener mListener;
     private User mUser;
     private View mView;
-    private Twitter mTwitter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -57,7 +48,7 @@ public class UserFragment extends Fragment {
     }
 
     private void loadUser(String screenName) {
-        new GetUserTask().execute(screenName);
+        TwitterService.getInstance().showUser(screenName);
     }
 
     public void updateView(User user) {
@@ -75,7 +66,6 @@ public class UserFragment extends Fragment {
         profileName.setText(user.getName());
         TextView profileScreenName = (TextView) mView.findViewById(R.id.profile_screen_name);
         profileScreenName.setText(UserUtils.getFullScreenName(user));
-        mListener.onUserLoaded(user);
         mUser = user;
     }
 
@@ -87,18 +77,7 @@ public class UserFragment extends Fragment {
             if (mUser == null) {
                 mUser = mListener.getUser();
             }
-            setUpTwitterService();
         }
-    }
-
-    private void setUpTwitterService() {
-        ConfigurationBuilder builder = new ConfigurationBuilder();
-        builder.setOAuthConsumerKey(TwitterService.getInstance().getTwitterOauthKey());
-        builder.setOAuthConsumerSecret(TwitterService.getInstance().getTwitterOauthSecret());
-        Configuration configuration = builder.build();
-        TwitterFactory factory = new TwitterFactory(configuration);
-        mTwitter = factory.getInstance();
-        mTwitter.setOAuthAccessToken(TwitterService.getInstance().getAccessToken());
     }
 
     @Override
@@ -107,28 +86,8 @@ public class UserFragment extends Fragment {
         super.onSaveInstanceState(outState);
     }
 
-    private class GetUserTask extends AsyncTask<String, Void, User> {
-
-        @Override
-        protected User doInBackground(String... strings) {
-            String screenName = strings[0];
-            try {
-                return mTwitter.users().showUser(screenName);
-            } catch (TwitterException e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            super.onCancelled();
-        }
-
-        @Override
-        protected void onPostExecute(User user) {
-            super.onPostExecute(user);
-            updateView(user);
-        }
+    @Subscribe
+    public void onUserEvent(TwitterEvents.UserEvent event) {
+        updateView(event.getResult());
     }
 }

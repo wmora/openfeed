@@ -4,6 +4,7 @@ import java.util.List;
 
 import twitter4j.QueryResult;
 import twitter4j.Status;
+import twitter4j.User;
 import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
 
@@ -29,6 +30,12 @@ public class TwitterEvents {
 
     public static class SearchEvent extends Event<QueryResult> {
         public SearchEvent(QueryResult result) {
+            super(result);
+        }
+    }
+
+    public static class UserEvent extends Event<User> {
+        public UserEvent(User result) {
             super(result);
         }
     }

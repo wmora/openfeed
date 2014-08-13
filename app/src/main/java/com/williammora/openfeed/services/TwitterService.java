@@ -22,6 +22,7 @@ import twitter4j.Status;
 import twitter4j.TwitterAdapter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterMethod;
+import twitter4j.User;
 import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
 
@@ -114,6 +115,10 @@ public class TwitterService {
         twitter.search(query);
     }
 
+    public void showUser(String screenName) {
+        twitter.showUser(screenName);
+    }
+
     private class TwitterListener extends TwitterAdapter {
 
         @Override
@@ -137,6 +142,11 @@ public class TwitterService {
         @Override
         public void searched(QueryResult queryResult) {
             BusProvider.getInstance().post(new TwitterEvents.SearchEvent(queryResult), true);
+        }
+
+        @Override
+        public void gotUserDetail(User user) {
+            BusProvider.getInstance().post(new TwitterEvents.UserEvent(user), true);
         }
 
         @Override
