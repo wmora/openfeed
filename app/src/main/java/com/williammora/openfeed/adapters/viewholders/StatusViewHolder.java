@@ -14,6 +14,7 @@ import com.williammora.openfeed.R;
 import com.williammora.openfeed.listeners.OnUserClickListener;
 import com.williammora.openfeed.listeners.OnViewHolderClickListener;
 import com.williammora.openfeed.picasso.StatusImageTransformation;
+import com.williammora.openfeed.services.TwitterService;
 import com.williammora.openfeed.utils.StatusUtils;
 import com.williammora.openfeed.utils.UserUtils;
 
@@ -87,6 +88,8 @@ public class StatusViewHolder extends RecyclerView.ViewHolder implements View.On
             mRetweetedByLayout.setVisibility(View.GONE);
         }
 
+        final long statusId = status.getId();
+
         mStatusImageHolder.removeAllViews();
 
         MediaEntity[] mediaEntities = status.getMediaEntities();
@@ -132,7 +135,11 @@ public class StatusViewHolder extends RecyclerView.ViewHolder implements View.On
         mRetweetsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: Retweet
+                if (view.isSelected()) {
+                    //TODO: Undo retweet
+                } else {
+                    TwitterService.getInstance().retweetStatus(statusId);
+                }
                 toggleRetweetsButton(view);
             }
         });
@@ -144,7 +151,11 @@ public class StatusViewHolder extends RecyclerView.ViewHolder implements View.On
         mFavoritesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: Favorite
+                if (view.isSelected()) {
+                    TwitterService.getInstance().destroyFavorite(statusId);
+                } else {
+                    TwitterService.getInstance().createFavorite(statusId);
+                }
                 toggleFavoritesButton(view);
             }
         });

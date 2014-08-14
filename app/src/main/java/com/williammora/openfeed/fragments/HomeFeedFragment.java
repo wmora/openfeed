@@ -24,4 +24,24 @@ public class HomeFeedFragment extends AbstractFeedFragment {
         updateFeed(feed);
         onRequestCompleted();
     }
+
+    @Subscribe
+    public void onStatusRetweeted(TwitterEvents.RetweetedStatusEvent event) {
+        super.onStatusRetweeted(event.getResult());
+    }
+
+    @Subscribe
+    public void onStatusDestroyed(TwitterEvents.DestroyedStatusEvent event) {
+        super.updateStatus(event.getResult());
+    }
+
+    @Subscribe
+    public void onFavoriteStatusCreated(TwitterEvents.CreatedFavoriteEvent event) {
+        super.updateStatus(event.getResult());
+    }
+
+    @Subscribe
+    public void onFavoriteStatusDestroyed(TwitterEvents.DestroyedFavoriteEvent event) {
+        super.updateStatus(event.getResult());
+    }
 }

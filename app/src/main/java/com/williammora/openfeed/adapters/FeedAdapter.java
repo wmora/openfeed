@@ -69,4 +69,9 @@ public class FeedAdapter extends RecyclerView.Adapter<StatusViewHolder> implemen
         mDataset.addAll(i, statuses);
         notifyItemRangeInserted(i, statuses.size());
     }
+
+    public void replace(int i, Status status) {
+        mDataset.set(i, status);
+        notifyItemChanged(i);
+    }
 }

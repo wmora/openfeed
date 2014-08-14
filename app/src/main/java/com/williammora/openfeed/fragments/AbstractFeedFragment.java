@@ -206,4 +206,31 @@ public abstract class AbstractFeedFragment extends OpenFeedFragment implements
         mFeedContainer.setEnabled(true);
     }
 
+    protected void onStatusRetweeted(Status status) {
+        Status retweetedStatus = status.getRetweetedStatus();
+        for (int i = 0; i < mFeed.getStatuses().size(); i++) {
+            Status s = mFeed.getStatuses().get(i);
+            boolean matched = !s.isRetweet() ? s.getId() == retweetedStatus.getId() :
+                    s.getRetweetedStatus().getId() == retweetedStatus.getId();
+            if (matched) {
+                mFeed.getStatuses().set(i, status);
+                mAdapter.replace(i, status);
+                break;
+            }
+        }
+    }
+
+    protected void updateStatus(Status status) {
+        for (int i = 0; i < mFeed.getStatuses().size(); i++) {
+            Status s = mFeed.getStatuses().get(i);
+            boolean matched = !s.isRetweet() ? s.getId() == status.getId() :
+                    s.getRetweetedStatus().getId() == status.getId();
+            if (matched) {
+                mFeed.getStatuses().set(i, status);
+                mAdapter.replace(i, status);
+                break;
+            }
+        }
+    }
+
 }
