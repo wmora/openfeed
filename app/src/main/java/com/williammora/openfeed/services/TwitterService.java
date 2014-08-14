@@ -119,6 +119,22 @@ public class TwitterService {
         twitter.showUser(screenName);
     }
 
+    public void retweetStatus(long statusId) {
+        twitter.retweetStatus(statusId);
+    }
+
+    public void destroyStatus(long statusId) {
+        twitter.destroyStatus(statusId);
+    }
+
+    public void createFavorite(long statusId) {
+        twitter.createFavorite(statusId);
+    }
+
+    public void destroyFavorite(long statusId) {
+        twitter.destroyFavorite(statusId);
+    }
+
     private class TwitterListener extends TwitterAdapter {
 
         @Override
@@ -142,6 +158,26 @@ public class TwitterService {
         @Override
         public void searched(QueryResult queryResult) {
             BusProvider.getInstance().post(new TwitterEvents.SearchEvent(queryResult), true);
+        }
+
+        @Override
+        public void retweetedStatus(Status status) {
+            BusProvider.getInstance().post(new TwitterEvents.RetweetedStatusEvent(status), true);
+        }
+
+        @Override
+        public void createdFavorite(Status status) {
+            BusProvider.getInstance().post(new TwitterEvents.CreatedFavoriteEvent(status), true);
+        }
+
+        @Override
+        public void destroyedFavorite(Status status) {
+            BusProvider.getInstance().post(new TwitterEvents.DestroyedFavoriteEvent(status), true);
+        }
+
+        @Override
+        public void destroyedStatus(Status status) {
+            BusProvider.getInstance().post(new TwitterEvents.DestroyedStatusEvent(status), true);
         }
 
         @Override
