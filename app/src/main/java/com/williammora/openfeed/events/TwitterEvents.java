@@ -40,4 +40,28 @@ public class TwitterEvents {
         }
     }
 
+    public static class RetweetedStatusEvent extends Event<Status> {
+        public RetweetedStatusEvent(Status result) {
+            super(result);
+        }
+    }
+
+    public static class CreatedFavoriteEvent extends Event<Status> {
+        public CreatedFavoriteEvent(Status result) {
+            super(result);
+        }
+    }
+
+    public static class DestroyedFavoriteEvent extends Event<Status> {
+        public DestroyedFavoriteEvent(Status result) {
+            super(result);
+        }
+    }
+
+    public static class DestroyedStatusEvent extends Event<Status> {
+        public DestroyedStatusEvent(Status result) {
+            super(result);
+        }
+    }
+
 }
