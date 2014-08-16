@@ -77,6 +77,9 @@ public class StatusViewHolder extends RecyclerView.ViewHolder implements View.On
 
     public void updateView(Status status) {
         setTag(status);
+
+        final long originalStatusId = status.getId(); // To undo retweets
+
         if (status.isRetweet()) {
             String retweetedBy = String.format(mContext.getResources()
                     .getString(R.string.status_retweeted_by_prefix), status.getUser().getName());
@@ -136,14 +139,14 @@ public class StatusViewHolder extends RecyclerView.ViewHolder implements View.On
             @Override
             public void onClick(View view) {
                 if (view.isSelected()) {
-                    //TODO: Undo retweet
+                    TwitterService.getInstance().destroyStatus(originalStatusId);
                 } else {
                     TwitterService.getInstance().retweetStatus(statusId);
                 }
                 toggleRetweetsButton(view);
             }
         });
-        if (status.isRetweetedByMe()) {
+        if (status.isRetweeted()) {
             toggleRetweetsButton(mRetweetsButton);
         }
         mFavoritesText.setTextColor(mContext.getResources().getColor(R.color.openfeed_text_secondary_color));
