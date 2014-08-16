@@ -105,7 +105,8 @@ public class StatusViewHolder extends RecyclerView.ViewHolder implements View.On
                 Picasso.with(statusImage.getContext()).cancelRequest(statusImage);
                 Picasso.with(statusImage.getContext())
                         .load(mediaEntity.getMediaURLHttps())
-                        .error(R.color.cardview_light_background)
+                        .placeholder(R.drawable.image_loader_placeholder)
+                        .error(R.drawable.image_loader_placeholder)
                         .transform(new StatusImageTransformation(itemView, status.getId()))
                         .into(statusImage);
                 mStatusImageHolder.addView(statusImage);
@@ -116,7 +117,8 @@ public class StatusViewHolder extends RecyclerView.ViewHolder implements View.On
         Picasso.with(mStatusUserPic.getContext()).cancelRequest(mStatusUserPic);
         Picasso.with(mStatusUserPic.getContext())
                 .load(status.getUser().getBiggerProfileImageURLHttps())
-                .error(R.drawable.ic_launcher)
+                .placeholder(R.drawable.image_loader_placeholder)
+                .error(R.drawable.image_loader_placeholder)
                 .into(mStatusUserPic);
         mStatusUserPic.setOnClickListener(new OnUserClickListener(status.getUser()));
         mStatusUserName.setText(status.getUser().getName());

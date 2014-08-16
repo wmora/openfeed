@@ -61,6 +61,8 @@ public class UserFragment extends OpenFeedFragment {
         ImageView profileImage = (ImageView) mView.findViewById(R.id.profile_image);
         Picasso.with(mView.getContext())
                 .load(user.getBiggerProfileImageURLHttps())
+                .placeholder(R.drawable.image_loader_placeholder)
+                .error(R.drawable.image_loader_placeholder)
                 .into(profileImage);
         TextView profileName = (TextView) mView.findViewById(R.id.profile_name);
         profileName.setText(user.getName());
