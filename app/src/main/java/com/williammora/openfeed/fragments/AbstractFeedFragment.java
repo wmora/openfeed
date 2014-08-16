@@ -210,9 +210,7 @@ public abstract class AbstractFeedFragment extends OpenFeedFragment implements
         Status retweetedStatus = status.getRetweetedStatus();
         for (int i = 0; i < mFeed.getStatuses().size(); i++) {
             Status s = mFeed.getStatuses().get(i);
-            boolean matched = !s.isRetweet() ? s.getId() == retweetedStatus.getId() :
-                    s.getRetweetedStatus().getId() == retweetedStatus.getId();
-            if (matched) {
+            if (statusesMatch(s, retweetedStatus)) {
                 mFeed.getStatuses().set(i, status);
                 mAdapter.replace(i, status);
                 break;
@@ -223,9 +221,7 @@ public abstract class AbstractFeedFragment extends OpenFeedFragment implements
     protected void updateStatus(Status status) {
         for (int i = 0; i < mFeed.getStatuses().size(); i++) {
             Status s = mFeed.getStatuses().get(i);
-            boolean matched = !s.isRetweet() ? s.getId() == status.getId() :
-                    s.getRetweetedStatus().getId() == status.getId();
-            if (matched) {
+            if (statusesMatch(s, status)) {
                 mFeed.getStatuses().set(i, status);
                 mAdapter.replace(i, status);
                 break;
@@ -233,4 +229,8 @@ public abstract class AbstractFeedFragment extends OpenFeedFragment implements
         }
     }
 
+    private boolean statusesMatch(Status s1, Status s2) {
+        return !s1.isRetweet() ? s1.getId() == s2.getId() :
+                s1.getRetweetedStatus().getId() == s2.getId();
+    }
 }
