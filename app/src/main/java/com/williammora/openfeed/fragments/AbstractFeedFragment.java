@@ -130,7 +130,7 @@ public abstract class AbstractFeedFragment extends OpenFeedFragment implements
     protected abstract void doRequest(Paging paging);
 
     public void onScrollStateChanged(int i) {
-        // Nothing to do here
+        mListener.onScrollStateChanged(i);
     }
 
     public void onScrolled(int x, int y) {
