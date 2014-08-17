@@ -27,7 +27,7 @@ public class HomeFeedFragment extends AbstractFeedFragment {
 
     @Subscribe
     public void onStatusRetweeted(TwitterEvents.RetweetedStatusEvent event) {
-        super.onStatusRetweeted(event.getResult());
+        super.updateStatus(event.getResult());
     }
 
     @Subscribe

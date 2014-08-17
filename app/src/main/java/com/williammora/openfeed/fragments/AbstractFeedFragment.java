@@ -62,7 +62,8 @@ public abstract class AbstractFeedFragment extends OpenFeedFragment implements
         mFeedView.setOnScrollListener(this);
 
         mFeedContainer = (SwipeRefreshLayout) rootView.findViewById(R.id.feed_container);
-        mFeedContainer.setColorSchemeColors(getResources().getColor(R.color.openfeed_deep_orange_a400),
+        mFeedContainer.setColorSchemeColors(
+                getResources().getColor(R.color.openfeed_deep_orange_a400),
                 getResources().getColor(R.color.openfeed_deep_orange_a700),
                 getResources().getColor(R.color.openfeed_deep_orange_a200),
                 getResources().getColor(R.color.openfeed_deep_orange_a100));
@@ -85,11 +86,7 @@ public abstract class AbstractFeedFragment extends OpenFeedFragment implements
         if (requestCode == STATUS_REQUEST_CODE && data != null) {
             Status status = (Status) data.getSerializableExtra(StatusActivity.EXTRA_STATUS);
             if (status != null) {
-                if (status.isRetweeted()) {
-                    onStatusRetweeted(status);
-                } else {
-                    updateStatus(status);
-                }
+                updateStatus(status);
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -223,22 +220,11 @@ public abstract class AbstractFeedFragment extends OpenFeedFragment implements
         mFeedContainer.setEnabled(true);
     }
 
-    protected void onStatusRetweeted(Status status) {
+    protected void updateStatus(Status status) {
         Status retweetedStatus = status.getRetweetedStatus();
         for (int i = 0; i < mFeed.getStatuses().size(); i++) {
             Status s = mFeed.getStatuses().get(i);
-            if (statusesMatch(s, retweetedStatus)) {
-                mFeed.getStatuses().set(i, status);
-                mAdapter.replace(i, status);
-                break;
-            }
-        }
-    }
-
-    protected void updateStatus(Status status) {
-        for (int i = 0; i < mFeed.getStatuses().size(); i++) {
-            Status s = mFeed.getStatuses().get(i);
-            if (statusesMatch(s, status)) {
+            if (statusesMatch(s, status.isRetweet() ? retweetedStatus : status)) {
                 mFeed.getStatuses().set(i, status);
                 mAdapter.replace(i, status);
                 break;
