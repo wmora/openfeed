@@ -31,6 +31,8 @@ public abstract class AbstractFeedFragment extends OpenFeedFragment implements
 
     private static final String SAVED_FEED = "SAVED_FEED";
 
+    private static final int STATUS_REQUEST_CODE = 100;
+
     protected RecyclerView mFeedView;
     protected FeedAdapter mAdapter;
     protected SwipeRefreshLayout mFeedContainer;
@@ -76,6 +78,21 @@ public abstract class AbstractFeedFragment extends OpenFeedFragment implements
             throw new ClassCastException("Activity must implement FeedFragmentListener");
         }
         mListener = (FeedFragmentListener) activity;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == STATUS_REQUEST_CODE && data != null) {
+            Status status = (Status) data.getSerializableExtra(StatusActivity.EXTRA_STATUS);
+            if (status != null) {
+                if (status.isRetweeted()) {
+                    onStatusRetweeted(status);
+                } else {
+                    updateStatus(status);
+                }
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -169,7 +186,7 @@ public abstract class AbstractFeedFragment extends OpenFeedFragment implements
         Intent intent = new Intent();
         intent.setClass(getActivity(), StatusActivity.class);
         intent.putExtra(StatusActivity.EXTRA_STATUS, status);
-        startActivity(intent);
+        startActivityForResult(intent, STATUS_REQUEST_CODE);
     }
 
     protected void updateFeed(Feed feed) {
