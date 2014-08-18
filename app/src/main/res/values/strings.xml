@@ -36,5 +36,10 @@
 
     <!-- Compose Status -->
     <string name="title_activity_compose_status">New</string>
+    <string name="compose_hint">What\'s happening?</string>
+    <string name="compose_characters_singular">character</string>
+    <string name="compose_characters_plural">characters</string>
+    <string name="compose_characters_left">%1$d %2$s left</string>
+    <string name="compose_send_button">Send</string>
 
 </resources>
