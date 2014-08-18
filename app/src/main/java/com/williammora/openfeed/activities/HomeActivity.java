@@ -1,20 +1,22 @@
 package com.williammora.openfeed.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AbsListView;
 
+import com.squareup.otto.Subscribe;
 import com.williammora.openfeed.R;
+import com.williammora.openfeed.events.NotificationEvent;
 import com.williammora.openfeed.fragments.HomeFeedFragment;
 import com.williammora.openfeed.listeners.FeedFragmentListener;
 import com.williammora.openfeed.listeners.OnComposeStatusButtonClickListener;
 import com.williammora.openfeed.services.TwitterService;
 import com.williammora.openfeed.widgets.FloatingActionButton;
+import com.williammora.openfeed.widgets.Snackbar;
 
-public class HomeActivity extends Activity implements FeedFragmentListener {
+public class HomeActivity extends OpenFeedActivity implements FeedFragmentListener {
 
     private static final String SAVED_SHOWING_GO_TO_TOP = "SAVED_SHOWING_GO_TO_TOP";
 
@@ -113,4 +115,13 @@ public class HomeActivity extends Activity implements FeedFragmentListener {
             mFab.hide();
         }
     }
+
+    @Subscribe
+    public void onNotificationReceived(NotificationEvent event) {
+        new Snackbar.Builder(this)
+                .withText(event.getResult())
+                .build()
+                .show();
+    }
+
 }

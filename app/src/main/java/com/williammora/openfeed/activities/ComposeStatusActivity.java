@@ -8,7 +8,8 @@ import android.view.MenuItem;
 import com.williammora.openfeed.R;
 import com.williammora.openfeed.fragments.ComposeStatusFragment;
 
-public class ComposeStatusActivity extends Activity {
+public class ComposeStatusActivity extends Activity
+        implements ComposeStatusFragment.ComposeStatusFragmentListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,7 +21,6 @@ public class ComposeStatusActivity extends Activity {
                     .commit();
         }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -39,5 +39,10 @@ public class ComposeStatusActivity extends Activity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onStatusUpdateRequested() {
+        finish();
     }
 }

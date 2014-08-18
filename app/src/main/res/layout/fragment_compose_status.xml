@@ -30,17 +30,18 @@
                 android:text="@string/compose_characters_left" />
 
             <android.support.v7.widget.CardView
+                android:id="@+id/send_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
+                android:clickable="true"
                 card_view:cardCornerRadius="2dp">
 
                 <TextView
                     style="@style/OpenFeedTheme.RaisedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:clickable="true"
                     android:text="@string/compose_send_button" />
             </android.support.v7.widget.CardView>
         </LinearLayout>

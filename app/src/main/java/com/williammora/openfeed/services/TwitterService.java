@@ -8,6 +8,7 @@ import android.util.Log;
 import com.williammora.openfeed.BuildConfig;
 import com.williammora.openfeed.OpenFeed;
 import com.williammora.openfeed.R;
+import com.williammora.openfeed.events.NotificationEvent;
 import com.williammora.openfeed.events.TwitterEvents;
 import com.williammora.openfeed.utils.BusProvider;
 import com.williammora.openfeed.utils.Preferences;
@@ -19,6 +20,7 @@ import twitter4j.Query;
 import twitter4j.QueryResult;
 import twitter4j.ResponseList;
 import twitter4j.Status;
+import twitter4j.StatusUpdate;
 import twitter4j.TwitterAdapter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterMethod;
@@ -34,6 +36,7 @@ public class TwitterService {
     private RequestToken requestToken;
     private Context context;
     private AsyncTwitter twitter;
+    private boolean loaded;
 
     public static TwitterService getInstance() {
         return ourInstance;
@@ -43,6 +46,9 @@ public class TwitterService {
     }
 
     public void init() {
+        if (loaded) {
+            return;
+        }
         context = OpenFeed.getApplication().getApplicationContext();
         twitter = new AsyncTwitterFactory().getInstance();
         twitter.addListener(new TwitterListener());
@@ -50,6 +56,7 @@ public class TwitterService {
         if (isSignedIn()) {
             twitter.setOAuthAccessToken(getAccessToken());
         }
+        loaded = true;
     }
 
     private SharedPreferences getSharedPreferences() {
@@ -135,6 +142,10 @@ public class TwitterService {
         twitter.destroyFavorite(statusId);
     }
 
+    public void updateStatus(StatusUpdate statusUpdate) {
+        twitter.updateStatus(statusUpdate);
+    }
+
     private class TwitterListener extends TwitterAdapter {
 
         @Override
@@ -183,6 +194,11 @@ public class TwitterService {
         @Override
         public void gotUserDetail(User user) {
             BusProvider.getInstance().post(new TwitterEvents.UserEvent(user), true);
+        }
+
+        @Override
+        public void updatedStatus(Status status) {
+            BusProvider.getInstance().post(new NotificationEvent("Status posted!"), true);
         }
 
         @Override
