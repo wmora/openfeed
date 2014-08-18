@@ -118,10 +118,9 @@ public class HomeActivity extends OpenFeedActivity implements FeedFragmentListen
 
     @Subscribe
     public void onNotificationReceived(NotificationEvent event) {
-        new Snackbar.Builder(this)
-                .withText(event.getResult())
-                .build()
-                .show();
+        Snackbar.with(this)
+                .text(event.getResult())
+                .show(this);
     }
 
 }
