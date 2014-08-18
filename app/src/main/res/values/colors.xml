@@ -13,4 +13,5 @@
     <color name="openfeed_text_secondary_color">#8a000000</color>
     <color name="openfeed_text_tertiary_color">#42000000</color>
     <color name="openfeed_twitter_blue">#00aced</color>
+    <color name="snackbar_background">#ff323232</color>
 </resources>
