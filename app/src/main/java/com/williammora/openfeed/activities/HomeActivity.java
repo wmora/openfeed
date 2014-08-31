@@ -14,7 +14,7 @@ import com.williammora.openfeed.listeners.FeedFragmentListener;
 import com.williammora.openfeed.listeners.OnComposeStatusButtonClickListener;
 import com.williammora.openfeed.services.TwitterService;
 import com.williammora.openfeed.widgets.FloatingActionButton;
-import com.williammora.openfeed.widgets.Snackbar;
+import com.williammora.snackbar.Snackbar;
 
 public class HomeActivity extends OpenFeedActivity implements FeedFragmentListener {
 

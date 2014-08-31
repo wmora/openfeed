@@ -36,4 +36,5 @@ dependencies {
     compile 'org.twitter4j:twitter4j-async:4.0.2'
     compile 'com.squareup:otto:1.3.5'
     compile 'com.squareup.picasso:picasso:2.3.2'
+    compile 'com.williammora:snackbar:1.0.0'
 }
